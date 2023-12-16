@@ -51,8 +51,6 @@ export class QuestionTypeComponent implements OnInit {
         .pipe(
           debounceTime(1000),
           distinctUntilChanged(),
-          skip(1),
-          first()
         )
         .subscribe((res) => {
           if(this.question.questionId) {
@@ -70,14 +68,7 @@ export class QuestionTypeComponent implements OnInit {
     });
   }
 
-  singleOptions = [{ field: '' }];
-
-  addOptions() {
-    this.singleOptions.push({
-      field: '',
-
-    });
-  }
+  
 
   getQuestionType(value: number): QuestionTypes {
     return QuestionTypes[value as unknown as keyof typeof QuestionTypes];
@@ -94,14 +85,14 @@ export class QuestionTypeComponent implements OnInit {
         this.section.sectionId,
         this.makeEnum(question.value.questionType)).subscribe((res: Result<FormList>) => {
           this.questionset = res.value?.sections;
-          this._formService.setValue(res.value!);
+          this._formService.setFormDetailsValue(res.value!);
         });
     }
   }
 
   deleteQuestion(question: Question) {
     this._formService.deleteQuestion(this.formData.formId, this.section.sectionId, question.questionId).subscribe((res: Result<FormList>) => {
-      this._formService.setValue(res.value!);
+      this._formService.setFormDetailsValue(res.value!);
     });
 
   }

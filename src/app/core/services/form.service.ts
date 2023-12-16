@@ -12,15 +12,24 @@ import { AbstractControl } from '@angular/forms';
 export class FormService {
 	formResponse!: Result<FormList[]>;
 	private formDetails = new BehaviorSubject<FormList>(null!);
+	private saveFormDetails = new BehaviorSubject<FormList>(null!);
   
 	constructor(private _httpClient: HttpClient) { }
 	
-	setValue(value: FormList) {
+	setFormDetailsValue(value: FormList) {
 		this.formDetails.next(value);
 	}
 	
-	getValue() {
+	getFormDetailsValue() {
 		return this.formDetails.asObservable();
+	}
+
+	setSaveFormValue(value: FormList) {
+		this.saveFormDetails.next(value);
+	}
+	
+	getSaveFormValue() {
+		return this.saveFormDetails.asObservable();
 	}
 
     //Get Available Form Api

@@ -1,0 +1,7 @@
+<div *ngSwitchCase="questionType.Numeric">
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label for="question">Enter the Question</mat-label>
+        <input matInput id="question" formControlName="question">
+    </mat-form-field>
+    <mat-checkbox formControlName="isRequired">Is Required</mat-checkbox>
+</div>

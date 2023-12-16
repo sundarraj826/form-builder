@@ -50,7 +50,7 @@ export class CreateFormAdminComponent implements OnInit {
       }
     });
 
-    this._formService.getValue().subscribe((res: FormList) => {
+    this._formService.getFormDetailsValue().subscribe((res: FormList) => {
       this.saveSettingsForm = res;
     })
 
@@ -75,7 +75,7 @@ export class CreateFormAdminComponent implements OnInit {
   getFormDetails(id: any): any {
     this._formService.getFormSetting(id).subscribe((res: Result<FormList>) => {
       if (res.value) {
-        this._formService.setValue(res.value);
+        this._formService.setFormDetailsValue(res.value);
         this.formData = res.value;
         this.formid = this.formData.formId;
         this.appendValue('title', this.formData.title);

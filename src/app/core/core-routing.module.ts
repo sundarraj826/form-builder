@@ -16,10 +16,17 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { AccountComponent } from './components/account/account.component';
 import { FormListingComponent } from './components/form-listing/form-listing.component';
 import { QuestionTypeComponent } from './components/question-type/question-type.component';
+import { CreateFormAdminComponent } from './components/create-form-admin/create-form-admin.component';
 import { CreateSectionComponent } from './components/create-section/create-section.component';
+import { NumericQuestionComponent } from './components/question-type/numeric-question/numeric-question.component';
+import { SingleSelectQuestionComponent } from './components/question-type/single-select-question/single-select-question.component';
+import { MultiSelectQuestionComponent } from './components/question-type/multi-select-question/multi-select-question.component';
+import { StarRatingQuestionComponent } from './components/question-type/star-rating-question/star-rating-question.component';
+import { TextTypeQuestionComponent } from './components/question-type/text-type-question/text-type-question.component';
+import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
 // Routes
 import { AppRoutes } from './routes/app-routes';
-import { CreateFormAdminComponent } from './components/create-form-admin/create-form-admin.component';
+
 
 
 const routes: Routes = [
@@ -64,7 +71,13 @@ export const components: Array<any> = [
 	LoadingComponent,
 	AccountComponent,
 	CreateSectionComponent,
-	QuestionTypeComponent
+	QuestionTypeComponent,
+	NumericQuestionComponent,
+	SingleSelectQuestionComponent,
+	MultiSelectQuestionComponent,
+	StarRatingQuestionComponent,
+	TextTypeQuestionComponent,
+	YesOrNoQuestionComponent
 ];
 
 @NgModule({

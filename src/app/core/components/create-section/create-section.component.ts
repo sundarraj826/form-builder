@@ -75,7 +75,7 @@ export class CreateSectionComponent implements OnInit {
 
   deleteSection(id: number) {
     this._formService.deleteSection(this.formData.formId, id).subscribe((res: Result<FormList>) => {
-      this._formService.setValue(res.value!);
+      this._formService.setFormDetailsValue(res.value!);
 
     })
   }
