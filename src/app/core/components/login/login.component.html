@@ -1,0 +1,29 @@
+<mat-card>
+	<form @fadeInOut [formGroup]="loginForm" (ngSubmit)="login()">
+		<h2>Login here</h2>
+
+		<mat-form-field appearance="fill">
+			<mat-label for="username">Username</mat-label>
+			<input type="username" id="username" matInput formControlName="username" placeholder="Enter Username">
+			<mat-error *ngIf="usernameControl.hasError('required')">Required</mat-error>
+			<mat-error *ngIf="usernameControl.hasError('invalidCredentials')">
+				{{ usernameControl.getError("invalidCredentials") }}
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label for="password">Password</mat-label>
+			<input type="password" id="password" matInput formControlName="password" placeholder="Enter Password">
+			<mat-error *ngIf="passwordControl.hasError('required')">Required</mat-error>
+			<mat-error *ngIf="passwordControl.hasError('invalidCredentials')">
+				{{ passwordControl.getError("invalidCredentials") }}
+			</mat-error>
+		</mat-form-field>
+
+		<button mat-flat-button color="primary" type="submit">Login</button>
+
+		<p>OR</p>
+		<button [routerLink]="[createUserRoute]" [relativeTo]="route.parent" mat-flat-button color="accent"
+			type="button">Create account</button>
+	</form>
+</mat-card>

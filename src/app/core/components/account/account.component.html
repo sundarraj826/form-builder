@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+	<button [routerLink]="homeRoute" mat-icon-button>
+		<mat-icon>home</mat-icon>
+	</button>
+
+	<span class="title">TQ Form</span>
+	<span class="spacer"></span>
+
+	<div class="logged-in-user">
+		<div>
+			<b>Username: </b>
+			<i>{{ authService.currentUser?.userName }}</i>
+		</div>
+		<div>
+			<b>User type: </b>
+			<i>{{ authService.currentUser?.userType === 1 ? 'Admin' : 'User' }}</i>
+		</div>
+	</div>
+
+	<button (click)="logout()" mat-icon-button>
+		<mat-icon>logout</mat-icon>
+	</button>
+</mat-toolbar>
+
+<main>
+	<router-outlet></router-outlet>
+</main>

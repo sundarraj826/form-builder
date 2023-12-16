@@ -1,0 +1,128 @@
+
+    <form [formGroup]="questionForms">
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Question Type</mat-label>
+        <select matNativeControl required formControlName="questionType"  (change)="addQuestion(questionForms)" #qesSelect>
+            <option>Select Question Type</option>
+            <option [value]="type" *ngFor="let type of questionTypes">{{ type }}</option>
+        </select>
+    </mat-form-field>
+    <input type="hidden" id="formId" formControlName="formId" [(ngModel)]="formData.formId">
+    <input type="hidden" id="sectionId" formControlName="sectionId" [(ngModel)]="section.sectionId">
+
+    <!-- ng Switch Qustion Type-->
+    <div [ngSwitch]="makeEnum(questionForms.get('questionType')?.value)">
+        <div *ngSwitchCase="questionType.Numeric">
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label for="question">Enter the Question</mat-label>
+                <input matInput id="question" formControlName="question">
+            </mat-form-field>
+            <mat-checkbox formControlName="isRequired">Is Required</mat-checkbox>
+        </div>
+
+        <!-- Signle Select DropDown Start-->
+        <div *ngSwitchCase="questionType.SingleSelectDropdown">
+            <mat-form-field class="d-block">
+                <mat-label for="question">Enter the Question</mat-label>
+                <input matInput id="question" formControlName="question">
+              </mat-form-field>
+              <div *ngFor="let signleOption of singleOptions; let i = index">
+              <mat-form-field class="d-block">
+                <mat-label for="option">option</mat-label>
+                <input 
+                    matInput 
+                    placeholder="option-{{i}}" 
+                    value="" id="option-{{i}}" 
+                    [(ngModel)]="signleOption.field" 
+                   >
+              </mat-form-field>
+              <button mat-raised-button color="primary" type="button" (click)="addOptions()">Add Options</button>
+              </div>
+              <!-- <form [formGroup]="questionForms" (ngSubmit)="submitForm()">
+                <div formArrayName="options">
+                  <div *ngFor="let option of questionForms.get('options')['controls']; let i = index">
+                    <mat-form-field class="d-block">
+                      <mat-label for="option">Option</mat-label>
+                      <input 
+                          matInput 
+                          placeholder="Option-{{i}}" [formControl]="option.get('field')">
+                    </mat-form-field>
+                  </div>
+                </div>
+              
+                <button mat-raised-button color="primary" type="button" (click)="addOptions()">Add Options</button>
+                <button mat-raised-button color="primary" type="submit">Submit</button>
+              </form> -->
+              <mat-checkbox formControlName="isRequired">Is Required</mat-checkbox>
+        </div>
+       <!-- Signle Select DropDown End-->
+
+        <!-- Multi Select DropDown Start-->
+        <div *ngSwitchCase="questionType.MultiSelectDropdown">
+            MultiSelectDropdown Case Content
+        </div>
+        <!-- Multi Select DropDown End-->
+
+        <!-- Star Rating Start-->
+        <div *ngSwitchCase="questionType.StarRating">
+            StarRating Case Content
+        </div>
+        <!-- Star Rating End-->
+
+        <!-- Text Type Start-->
+        <div *ngSwitchCase="questionType.TextResponse">
+            <mat-form-field class="example-full-width d-block">
+                <mat-label>Enter the Question</mat-label>
+                <input 
+                   matInput 
+                   placeholder="Enter the Question" 
+                   value="">
+            </mat-form-field>
+
+            <div>
+                <mat-form-field class="example-full-width d-block">
+                    <mat-label>Answer</mat-label>
+                    <input 
+                       matInput 
+                       placeholder="Answer" 
+                       value="">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Text Type End-->
+
+        <!-- Yes or No Type Start-->
+        <div *ngSwitchCase="questionType.YesNoResponse">
+            <mat-form-field class="example-full-width d-block">
+                <mat-label>Enter the Question</mat-label>
+                <input 
+                   matInput 
+                   placeholder="Enter the Question" 
+                   value="">
+            </mat-form-field>
+
+            <div>
+                <mat-form-field class="example-full-width d-block">
+                    <mat-label>Answer</mat-label>
+                    <input 
+                       matInput 
+                       placeholder="Answer" 
+                       value="">
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width d-block">
+                    <mat-label>Answer</mat-label>
+                    <input 
+                       matInput 
+                       placeholder="Answer" 
+                       value="">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Yes or No Type End-->
+    </div>
+    <button mat-raised-button color="warn" (click)="deleteQuestion(question)">Delete</button>
+
+   
+      
+</form>

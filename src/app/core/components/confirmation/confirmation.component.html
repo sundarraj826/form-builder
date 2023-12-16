@@ -1,0 +1,15 @@
+<div class="confirmation-pop-up">
+	<div>{{ message }}</div>
+
+	<div class="action-buttons">
+		<button *ngIf="showYes" type="button" (click)="onYesClick()" mat-flat-button color="primary"
+			[mat-dialog-close]="true">
+			{{ yesText }}
+		</button>
+
+		<button *ngIf="showNo" type="button" (click)="onNoClick()" mat-flat-button color="accent"
+			[mat-dialog-close]="true">
+			{{ noText }}
+		</button>
+	</div>
+</div>

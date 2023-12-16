@@ -1,0 +1,32 @@
+<mat-vertical-stepper [linear]="true" #stepper>
+    <!-- Step 1 -->
+    <mat-step *ngFor="let section of formData.sections; let i = index" [stepControl]="stepForms[i]">
+        <ng-template matStepLabel>Section ID {{section.sectionId }} <button mat-icon-button (click)="deleteSection(section.sectionId)"><mat-icon>delete</mat-icon></button></ng-template>
+        <form [formGroup]="stepForms[i]">
+            <input type="hidden" id="sectionId" formControlName="sectionId" [(ngModel)]="section.sectionId">
+            <input type="hidden" id="formId" formControlName="formId" [(ngModel)]="formData.formId">
+
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label for="Section">Section</mat-label>
+                <input matInput id="Section" formControlName="Section">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label for="sectionDesc">Section Description</mat-label>
+                <input matInput id="sectionDesc" formControlName="sectionDesc">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="addQuestionSet()">Add Question</button>
+           
+            <div *ngFor="let question of section.questions"> 
+                <tq-question-type [formData]="formData" [index]="i" [section]="section" [question]="question" (autoSaveQuestion)="autoSave.emit($event)"></tq-question-type>
+            </div>
+            <div *ngIf="questionset"> 
+                {{questionset}}
+                <tq-question-type [formData]="formData" [index]="i" [section]="section" *ngFor="let number of getRange(questionset)"></tq-question-type>
+            </div>
+            <div>
+                <button mat-raised-button color="accent" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-vertical-stepper>

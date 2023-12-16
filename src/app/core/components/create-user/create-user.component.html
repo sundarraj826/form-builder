@@ -1,0 +1,38 @@
+<mat-card>
+	<form @fadeInOut [formGroup]="createUserForm" (ngSubmit)="createUser()">
+		<h2>Register here</h2>
+
+		<div>
+			<mat-label for="userType">User type:</mat-label>
+			<mat-radio-group id="userType" formControlName="userType">
+				<mat-radio-button [checked]="true" value="1">Admin</mat-radio-button>
+				<mat-radio-button value="2">User</mat-radio-button>
+			</mat-radio-group>
+		</div>
+
+		<mat-form-field appearance="fill">
+			<mat-label for="username">Username</mat-label>
+			<input type="username" id="username" matInput formControlName="username" placeholder="Enter Username">
+			<mat-error *ngIf="usernameControl.hasError('required')">Required</mat-error>
+			<mat-error *ngIf="usernameControl.hasError('invalidCredentials')">
+				{{ usernameControl.getError("invalidCredentials") }}
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="fill">
+			<mat-label for="password">Password</mat-label>
+			<input type="password" id="password" matInput formControlName="password" placeholder="Enter Password">
+			<mat-error *ngIf="passwordControl.hasError('required')">Required</mat-error>
+			<mat-error *ngIf="passwordControl.hasError('invalidCredentials')">
+				{{ passwordControl.getError("invalidCredentials") }}
+			</mat-error>
+		</mat-form-field>
+
+		<button mat-flat-button color="primary" type="submit">Register</button>
+
+		<p>OR</p>
+		<button [routerLink]="[loginRoute]" [relativeTo]="route.parent" mat-flat-button color="accent"
+			type="button">Login
+			here</button>
+	</form>
+</mat-card>
