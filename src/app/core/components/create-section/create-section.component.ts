@@ -37,14 +37,8 @@ export class CreateSectionComponent implements OnInit {
 
     this.formData.sections.forEach((section, index) => {
       const formGroup = this._fb.group({
-        name: new FormControl('', [
-          Validators.required,
-          Validators.minLength(2)
-        ]),
-        description: new FormControl('', [
-          Validators.required,
-          Validators.minLength(2)
-        ]),
+        name: new FormControl(''),
+        description: new FormControl(''),
         sectionId: [''],
         formId: [''],
       });

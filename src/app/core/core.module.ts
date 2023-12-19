@@ -15,6 +15,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 // Components
@@ -57,7 +58,8 @@ function tryInitiateSession(authService: AuthService): () => Promise<void> {
 		MatToolbarModule,
 		MatIconModule,
 		MatStepperModule,
-		MatCheckboxModule
+		MatCheckboxModule,
+		MatSnackBarModule
 	],
 	providers: [
 		{

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { debounceTime, tap } from 'rxjs/operators';
 import { FormService } from 'src/app/core/services/form.service';
 import { FormList, Question } from 'src/app/core/types/forms';
 
@@ -21,8 +22,9 @@ export class TextQuestionComponent implements OnInit {
     required: new FormControl(''),
   });
   saveFormFormat!: FormList;
+  saveFormMesg: string = 'Saved'
 
-  constructor(private _formService: FormService) {
+  constructor(private _formService: FormService, private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -50,7 +52,16 @@ export class TextQuestionComponent implements OnInit {
           };
           this.saveFormFormat.sections[sectionIndex].questions = this.saveFormFormat.sections[sectionIndex].questions.filter(question => question !== null);
           this._formService.setSaveFormValue(this.saveFormFormat);
-          this._formService.autoSaveFormValue().subscribe();
+          this._formService.autoSaveFormValue().pipe(
+            tap(res => {
+              if (res.ok) {
+                console.log('Saved');
+                this._snackBar.open(this.saveFormMesg, undefined, { duration: 500 });
+              } else {
+                console.log('Errors:', res);
+              }
+            })
+          ).subscribe();
         }
       });
   }

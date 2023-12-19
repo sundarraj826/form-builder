@@ -123,17 +123,18 @@ export class FormService {
 
 	autoSaveFormValue(): Observable<Result<FormList>> {
 		return this.getSaveFormValue().pipe(
-			tap(data => {
-				console.log('Saving ....')
-			}),
+			// tap(data => {
+			// 	console.log('Saving ....', data)
+			// }),
 			switchMap(data => this.saveFormSettings(data)),
-			tap(res => {
-				if (res.ok) {
-					console.log('Saved');
-				} else {
-					console.log('Errors:', res);
-				}
-			})
+			// tap(res => {
+			// 	if (res.ok) {
+			// 		console.log('Saved');
+
+			// 	} else {
+			// 		console.log('Errors:', res);
+			// 	}
+			// })
 		);
 	}
 }

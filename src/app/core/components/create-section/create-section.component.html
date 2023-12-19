@@ -10,12 +10,12 @@
             <mat-form-field appearance="outline" class="d-block">
                 <mat-label for="name">Section</mat-label>
                 <input matInput id="name" formControlName="name">
-                <mat-error
+                <!-- <mat-error
                     *ngIf="!stepForms[i]?.controls?.valid && ( stepForms[i]?.controls?.name?.touched || stepForms[i]?.controls?.name?.dirty)">
                     <span *ngIf="stepForms[i]?.controls?.name?.errors?.required">Section Name is Required</span>
                     <span *ngIf="stepForms[i].controls?.name?.errors?.minlength">Need Minimum 2 Character</span>
                     <span *ngIf="stepForms[i].controls?.name?.errors?.maxLength">Need Maximum 200 Character</span>
-                </mat-error>
+                </mat-error> -->
 
             </mat-form-field>
 
@@ -23,14 +23,14 @@
             <mat-form-field appearance="outline" class="d-block">
                 <mat-label for="description">Section Description</mat-label>
                 <input matInput id="description" formControlName="description">
-                <mat-error
+                <!-- <mat-error
                     *ngIf="!stepForms[i]?.controls?.valid && ( stepForms[i]?.controls?.description?.touched || stepForms[i]?.controls?.description?.dirty)">
                     <span *ngIf="stepForms[i]?.controls?.description?.errors?.required">Section Description is
                         Required</span>
                     <span *ngIf="stepForms[i].controls?.description?.errors?.minlength">Need Minimum 2 Character</span>
                     <span *ngIf="stepForms[i].controls?.description?.errors?.maxLength">Need Maximum 200
                         Character</span>
-                </mat-error>
+                </mat-error> -->
             </mat-form-field>
 
 

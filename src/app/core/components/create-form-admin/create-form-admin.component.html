@@ -1,5 +1,7 @@
 <div class="container">
   <button mat-raised-button color="accent" (click)="lockForm()" mat-button>lock Form</button>
+
+
   <form action="" [formGroup]="createForm" (ngSubmit)="createFormSubmit()">
     <div>
       <mat-form-field appearance="outline" class="d-block">
@@ -32,10 +34,10 @@
 
   </form>
 
-
-  <button mat-raised-button color="accent" (click)="createSection()" class="mt-2 mb-2">Create Section</button>
-
   <div *ngIf="formData">
+    <button mat-raised-button color="accent" (click)="createSection()" class="mt-2 mb-2">Create Section</button>
+
+
     <div class="container">
       <tq-create-section [formData]="saveSettingsForm"></tq-create-section>
     </div>

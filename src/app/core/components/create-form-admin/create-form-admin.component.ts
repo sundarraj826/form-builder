@@ -8,6 +8,7 @@ import { AppRoutes } from '../../routes/app-routes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { empty } from 'rxjs';
 import { ResultBase } from '../../types/result-base';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'create-form-admin',
@@ -56,6 +57,27 @@ export class CreateFormAdminComponent implements OnInit {
       this.saveSettingsForm = res;
     })
 
+    //auto save form fields
+    this.createForm.get('title')?.setValue(this.formData?.title);
+    this.createForm.get('description')?.setValue(this.formData?.description)
+
+    this.createForm.valueChanges
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged()
+      )
+      .subscribe((res: FormList) => {
+        const hasValidValues = (res.title.trim() ?? '') !== '' && (res.description.trim() ?? '') !== '';
+
+        // console.log(res)
+        if (hasValidValues) {
+          this.saveFormFormat.title = res.title;
+          this.saveFormFormat.description = res.description;
+          this._formService.setSaveFormValue(this.saveFormFormat);
+          this._formService.autoSaveFormValue().subscribe();
+        }
+      });
+
 
   }
 
@@ -67,14 +89,16 @@ export class CreateFormAdminComponent implements OnInit {
     this._formService.addCreateForm(this.createForm.controls.title.value, this.createForm.controls.description.value).subscribe(
       (response: Result<FormList>) => {
         this.getFormDetails(response.value?.formId);
+
         this.router.navigate(['account/create-form-admin', response.value?.formId]);
       },
       (error) => {
         console.error('Error for form creating:', error);
       }
     );
-
   }
+
+
 
   getFormDetails(id: any): any {
     this._formService.getFormSetting(id).subscribe((res: Result<FormList>) => {
@@ -86,8 +110,8 @@ export class CreateFormAdminComponent implements OnInit {
         this.appendValue('description', this.formData.description);
 
 
-        this._formService.getSaveFormValue().subscribe((tes: FormList) => {
-          this.saveFormFormat = tes;
+        this._formService.getSaveFormValue().subscribe((res: FormList) => {
+          this.saveFormFormat = res;
           this.saveFormFormat.formId = this.formid;
           this.saveFormFormat.title = this.formData.title;
           this.saveFormFormat.description = this.formData.description;
@@ -109,7 +133,7 @@ export class CreateFormAdminComponent implements OnInit {
     return this.createForm.get('description');
   }
 
-  appendValue(controlName: string, value: any): void {
+  appendValue(controlName: string, value: string): void {
     const control = this.createForm.get(controlName) as FormControl;
     if (control) {
       control.setValue(value);
@@ -124,12 +148,15 @@ export class CreateFormAdminComponent implements OnInit {
 
 
   lockForm() {
-    this._formService.lockForm(this.formid).subscribe((res: ResultBase) => {
+    this._formService.lockForm(this.formid).subscribe((res: Result<FormList>) => {
+      console.log(res)
       if (res.ok) {
         alert("Form Locked");
+
       } else {
         alert(res.errors);
       }
+
     })
   }
 
