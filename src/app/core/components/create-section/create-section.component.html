@@ -1,32 +1,52 @@
 <mat-vertical-stepper [linear]="true" #stepper>
     <!-- Step 1 -->
     <mat-step *ngFor="let section of formData.sections; let i = index" [stepControl]="stepForms[i]">
-        <ng-template matStepLabel>Section ID {{section.sectionId }} <button mat-icon-button (click)="deleteSection(section.sectionId)"><mat-icon>delete</mat-icon></button></ng-template>
+        <ng-template matStepLabel>Section ID {{section.sectionId }} <button mat-icon-button
+                (click)="deleteSection(section.sectionId)"><mat-icon>delete</mat-icon></button></ng-template>
         <form [formGroup]="stepForms[i]">
             <input type="hidden" id="sectionId" formControlName="sectionId" [(ngModel)]="section.sectionId">
             <input type="hidden" id="formId" formControlName="formId" [(ngModel)]="formData.formId">
 
-            <mat-form-field appearance="fill" class="d-block">
-                <mat-label for="Section">Section</mat-label>
-                <input matInput id="Section" formControlName="Section">
+            <mat-form-field appearance="outline" class="d-block">
+                <mat-label for="name">Section</mat-label>
+                <input matInput id="name" formControlName="name">
+                <mat-error
+                    *ngIf="!stepForms[i]?.controls?.valid && ( stepForms[i]?.controls?.name?.touched || stepForms[i]?.controls?.name?.dirty)">
+                    <span *ngIf="stepForms[i]?.controls?.name?.errors?.required">Section Name is Required</span>
+                    <span *ngIf="stepForms[i].controls?.name?.errors?.minlength">Need Minimum 2 Character</span>
+                    <span *ngIf="stepForms[i].controls?.name?.errors?.maxLength">Need Maximum 200 Character</span>
+                </mat-error>
+
             </mat-form-field>
 
-            <mat-form-field appearance="fill" class="d-block">
-                <mat-label for="sectionDesc">Section Description</mat-label>
-                <input matInput id="sectionDesc" formControlName="sectionDesc">
+
+            <mat-form-field appearance="outline" class="d-block">
+                <mat-label for="description">Section Description</mat-label>
+                <input matInput id="description" formControlName="description">
+                <mat-error
+                    *ngIf="!stepForms[i]?.controls?.valid && ( stepForms[i]?.controls?.description?.touched || stepForms[i]?.controls?.description?.dirty)">
+                    <span *ngIf="stepForms[i]?.controls?.description?.errors?.required">Section Description is
+                        Required</span>
+                    <span *ngIf="stepForms[i].controls?.description?.errors?.minlength">Need Minimum 2 Character</span>
+                    <span *ngIf="stepForms[i].controls?.description?.errors?.maxLength">Need Maximum 200
+                        Character</span>
+                </mat-error>
             </mat-form-field>
-            <button mat-raised-button color="primary" (click)="addQuestionSet()">Add Question</button>
-           
-            <div *ngFor="let question of section.questions"> 
-                <tq-question-type [formData]="formData" [index]="i" [section]="section" [question]="question" (autoSaveQuestion)="autoSave.emit($event)"></tq-question-type>
+
+
+            <div *ngFor="let question of section.questions; let j = index" class="mb-3">
+                <tq-question-type [formData]="formData" [sectionIndex]="i" [questionIndex]="j" [section]="section"
+                    [question]="question"></tq-question-type>
             </div>
-            <div *ngIf="questionset"> 
-                {{questionset}}
-                <tq-question-type [formData]="formData" [index]="i" [section]="section" *ngFor="let number of getRange(questionset)"></tq-question-type>
+            <div *ngIf="questionset" class="mb-3">
+                <tq-question-type [formData]="formData" [sectionIndex]="i" [section]="section" [question]="questionNull"
+                    *ngFor="let number of getRange(questionset)"></tq-question-type>
             </div>
-            <div>
+            <!-- <div>
                 <button mat-raised-button color="accent" matStepperNext>Next</button>
-            </div>
+            </div> -->
+
+            <button mat-raised-button color="primary" (click)="addQuestionSet()">Add Question</button>
         </form>
     </mat-step>
 </mat-vertical-stepper>

@@ -15,37 +15,35 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FormListingComponent implements OnInit {
 	formResponse!: Result<FormList[]>;
-	
 
-	constructor(private _formService: FormService, private _http: HttpClient) {}
+
+	constructor(private _formService: FormService, private _http: HttpClient) { }
 
 	ngOnInit() {
 
-        //Get Available Forms - Admin
+		//Get Available Forms - Admin
 		this._formService.getFormList().subscribe(
 			(response) => {
-				// console.log(response)
 				this.formResponse = response;
 			},
 			(error) => {
 				console.error('Error fetching response:', error);
-		});
-		
+			});
+
 	}
 
-	get createFormBtn(): string{
+	get createFormBtn(): string {
 		return '../' + AppRoutes.createFormAdmin;
-	}	
-
-
-	editForm(id: number){
-         console.log('id: ', id)
 	}
 
-    //Delete Form 
-	deleteForm(id: number){
-		console.log(id)
-		const delRequest = this._http.delete<Result<FormList[]>>('Api/Form/Delete?formId='+id);
+
+	editForm(id: number) {
+		console.log('id: ', id)
+	}
+
+	//Delete Form 
+	deleteForm(id: number) {
+		const delRequest = this._http.delete<Result<FormList[]>>('Api/Form/Delete?formId=' + id);
 
 		delRequest.subscribe(() => {
 			this.formResponse.value = this.formResponse.value?.filter((formDel) => {
@@ -55,4 +53,3 @@ export class FormListingComponent implements OnInit {
 	}
 
 }
-	

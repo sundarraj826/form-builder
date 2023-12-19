@@ -1,0 +1,25 @@
+<form [formGroup]="questionResponseOptions">
+  <mat-form-field appearance="outline" class="d-block">
+    <mat-label for="text">Enter the Question</mat-label>
+    <input type="text" matInput id="text" formControlName="text">
+  </mat-form-field>
+
+  <div formArrayName="responseOptions">
+    <div *ngFor="let responseOption of responseOptions.controls; let i = index" [formGroupName]="i"
+      class="d-flex align-items-center justify-content-between">
+      <mat-form-field class="d-block w-100">
+        <mat-label for="option">Option</mat-label>
+        <input matInput type="text" class="form-input" placeholder="option" formControlName="optionAnswer"
+          id="option" />
+      </mat-form-field>
+
+      <button mat-icon-button aria-label="delete option" (click)="deleteOption(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <button (click)="addOption()">Add option</button>
+  <mat-checkbox formControlName="required">Is Required</mat-checkbox>
+
+</form>

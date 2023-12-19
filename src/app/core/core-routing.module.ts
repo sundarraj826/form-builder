@@ -18,8 +18,8 @@ import { FormListingComponent } from './components/form-listing/form-listing.com
 import { QuestionTypeComponent } from './components/question-type/question-type.component';
 import { CreateFormAdminComponent } from './components/create-form-admin/create-form-admin.component';
 import { CreateSectionComponent } from './components/create-section/create-section.component';
-import { NumericQuestionComponent } from './components/question-type/numeric-question/numeric-question.component';
-import { SingleSelectQuestionComponent } from './components/question-type/single-select-question/single-select-question.component';
+import { TextQuestionComponent } from './components/question-type/text-question/text-question.component';
+import { SelectableQuestionComponent } from './components/question-type/selectable-question/selectable-question.component';
 import { MultiSelectQuestionComponent } from './components/question-type/multi-select-question/multi-select-question.component';
 import { StarRatingQuestionComponent } from './components/question-type/star-rating-question/star-rating-question.component';
 import { TextTypeQuestionComponent } from './components/question-type/text-type-question/text-type-question.component';
@@ -72,8 +72,8 @@ export const components: Array<any> = [
 	AccountComponent,
 	CreateSectionComponent,
 	QuestionTypeComponent,
-	NumericQuestionComponent,
-	SingleSelectQuestionComponent,
+	TextQuestionComponent,
+	SelectableQuestionComponent,
 	MultiSelectQuestionComponent,
 	StarRatingQuestionComponent,
 	TextTypeQuestionComponent,

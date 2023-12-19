@@ -1,8 +1,8 @@
-
-    <form [formGroup]="questionForms">
-    <mat-form-field appearance="fill" class="d-block">
+<form [formGroup]="questionForms">
+    <mat-form-field appearance="outline" class="d-block">
         <mat-label>Question Type</mat-label>
-        <select matNativeControl required formControlName="questionType"  (change)="addQuestion(questionForms)" #qesSelect>
+        <select matNativeControl required formControlName="questionType" (change)="addQuestion(questionForms)"
+            #qesSelect>
             <option>Select Question Type</option>
             <option [value]="type" *ngFor="let type of questionTypes">{{ type }}</option>
         </select>
@@ -12,32 +12,62 @@
 
     <!-- ng Switch Qustion Type-->
     <div [ngSwitch]="makeEnum(questionForms.get('questionType')?.value)">
+        <div *ngSwitchCase="questionType.Numeric">
+            <!-- Numeric Question-->
+            <tq-text-question [sectionId]="section.sectionId" [questionId]="question.questionId" [question]="question"
+                [questionIndex]="questionIndex">
+            </tq-text-question>
+        </div>
 
-        <!-- Numeric Question-->
-        <tq-numeric-question></tq-numeric-question>
 
-        <!-- Signle Select DropDown Start-->
-        <tq-single-select-question></tq-single-select-question>
-       <!-- Signle Select DropDown End-->
+        <div *ngSwitchCase="questionType.SingleSelectDropdown">
+            <!-- Signle Select DropDown Start-->
+            <tq-single-select-question [sectionId]="section.sectionId" [questionId]="question.questionId"
+                [question]="question" [questionIndex]="questionIndex"></tq-single-select-question>
+            <!-- Signle Select DropDown End-->
+        </div>
 
-        <!-- Multi Select DropDown Start-->
-        <tq-multi-select-question></tq-multi-select-question>
-        <!-- Multi Select DropDown End-->
 
-        <!-- Star Rating Start-->
-        <tq-star-rating-question></tq-star-rating-question>
-        <!-- Star Rating End-->
+        <div *ngSwitchCase="questionType.MultiSelectDropdown">
+            <!-- Multi Select DropDown Start-->
+            <tq-single-select-question [sectionId]="section.sectionId" [questionId]="question.questionId"
+                [question]="question" [questionIndex]="questionIndex"></tq-single-select-question>
+            <!-- Multi Select DropDown End-->
+        </div>
 
-        <!-- Text Type Start-->
-       <tq-text-type-question></tq-text-type-question>
-        <!-- Text Type End-->
 
-        <!-- Yes or No Type Start-->
-       <tq-yes-or-no-question></tq-yes-or-no-question>
-        <!-- Yes or No Type End-->
+        <div *ngSwitchCase="questionType.StarRating">
+            <!-- Star Rating Start-->
+            <tq-text-question [sectionId]="section.sectionId" [questionId]="question.questionId" [question]="question"
+                [questionIndex]="questionIndex">
+            </tq-text-question>
+            <!-- Star Rating End-->
+        </div>
+
+
+        <div *ngSwitchCase="questionType.TextResponse">
+            <!-- Text Type Start-->
+            <tq-text-question [sectionId]="section.sectionId" [questionId]="question.questionId" [question]="question"
+                [questionIndex]="questionIndex">
+            </tq-text-question>
+            <!-- Text Type End-->
+        </div>
+
+
+        <div *ngSwitchCase="questionType.YesNoResponse">
+            <!-- Yes or No Type Start-->
+            <tq-text-question [sectionId]="section.sectionId" [questionId]="question.questionId" [question]="question"
+                [questionIndex]="questionIndex">
+            </tq-text-question>
+            <!-- Yes or No Type End-->
+        </div>
+
+        <button mat-raised-button color="warn" (click)="deleteQuestion(question)">Delete
+            Question</button>
+
     </div>
-    <button mat-raised-button color="warn" (click)="deleteQuestion(question)">Delete</button>
 
-   
-      
+
+
+
 </form>

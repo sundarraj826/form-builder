@@ -1,7 +1,8 @@
 <div class="container">
+  <button mat-raised-button color="accent" (click)="lockForm()" mat-button>lock Form</button>
   <form action="" [formGroup]="createForm" (ngSubmit)="createFormSubmit()">
     <div>
-      <mat-form-field appearance="fill" class="d-block">
+      <mat-form-field appearance="outline" class="d-block">
         <mat-label for="title">Title</mat-label>
         <input matInput id="title" formControlName="title">
         <mat-error *ngIf="!title?.valid && ( title?.touched || title?.dirty)">
@@ -13,7 +14,7 @@
     </div>
 
     <div>
-      <mat-form-field appearance="fill" class="d-block">
+      <mat-form-field appearance="outline" class="d-block">
         <mat-label for="description">Description</mat-label>
         <input matInput id="description" formControlName="description">
         <mat-error *ngIf="!description?.valid && ( description?.touched || description?.dirty)">
@@ -25,20 +26,19 @@
     </div>
 
     <div class="d-flex align-items-center justify-content-between">
-      <button mat-button [routerLink]="backBtn">Back</button>
+      <!-- <button mat-button [routerLink]="backBtn">Back</button> -->
       <button mat-raised-button color="primary" [disabled]="!createForm.valid">Create Form</button>
     </div>
 
   </form>
 
 
-  <button mat-raised-button color="accent" (click)="createSection()">Create Section</button>
+  <button mat-raised-button color="accent" (click)="createSection()" class="mt-2 mb-2">Create Section</button>
 
   <div *ngIf="formData">
     <div class="container">
-      <tq-create-section [formData]="saveSettingsForm" (autoSave)="saveFormSetting($event)"></tq-create-section>
+      <tq-create-section [formData]="saveSettingsForm"></tq-create-section>
     </div>
   </div>
+  <button mat-button mat-raised-button color="primary" class="float-right" (click)="submitForm()">Save form</button>
 </div>
-
-<button mat-button >Save form</button>

@@ -18,7 +18,7 @@ export class CreateQuestion {
     formId!: number;
     sectionId!: number;
     questionType!: number;
-  }
+}
 
 export class Question {
     questionId!: number;
@@ -26,6 +26,14 @@ export class Question {
     required!: boolean;
     questionType!: number;
     type!: number;
+    responseOptions!: Record<string, string>;
+}
+
+export class ResponseOptions {
+    formId!: number;
+    sectionId!: number;
+    questionId!: number;
+    responseOptions!: Record<string, string>;
 }
 
 

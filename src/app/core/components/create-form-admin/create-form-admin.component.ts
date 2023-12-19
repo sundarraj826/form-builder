@@ -7,6 +7,7 @@ import { QuestionTypes } from '../../types/question-type';
 import { AppRoutes } from '../../routes/app-routes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { empty } from 'rxjs';
+import { ResultBase } from '../../types/result-base';
 
 @Component({
   selector: 'create-form-admin',
@@ -20,7 +21,7 @@ export class CreateFormAdminComponent implements OnInit {
   inputValue!: string;
   saveSettingsForm!: FormList;
   stepForms: FormGroup[] = [];
-
+  saveFormFormat!: FormList;
   @ViewChild('qesSelect') qesSelect!: ElementRef;
 
   createForm = new FormGroup({
@@ -36,6 +37,7 @@ export class CreateFormAdminComponent implements OnInit {
     ])
 
   })
+  saveformSetting!: FormList;
 
   constructor(private _formService: FormService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
   }
@@ -54,6 +56,7 @@ export class CreateFormAdminComponent implements OnInit {
       this.saveSettingsForm = res;
     })
 
+
   }
 
   get backBtn(): string {
@@ -70,6 +73,7 @@ export class CreateFormAdminComponent implements OnInit {
         console.error('Error for form creating:', error);
       }
     );
+
   }
 
   getFormDetails(id: any): any {
@@ -80,6 +84,16 @@ export class CreateFormAdminComponent implements OnInit {
         this.formid = this.formData.formId;
         this.appendValue('title', this.formData.title);
         this.appendValue('description', this.formData.description);
+
+
+        this._formService.getSaveFormValue().subscribe((tes: FormList) => {
+          this.saveFormFormat = tes;
+          this.saveFormFormat.formId = this.formid;
+          this.saveFormFormat.title = this.formData.title;
+          this.saveFormFormat.description = this.formData.description;
+          this._formService.setSaveFormValue(this.saveFormFormat);
+        })
+
       }
     });
   }
@@ -104,53 +118,31 @@ export class CreateFormAdminComponent implements OnInit {
 
   createSection() {
     this._formService.addCreateSection(this.formid).subscribe((result: Result<FormList>) => {
-      console.log(result);
       this.getFormDetails(result.value?.formId);
     });
   }
 
-  saveFormSetting(event: any) {
-    // if(event.formId)
-      // this.getFormDetails(event.formId);
 
-    if(event.sectionId){
-        this.saveSettingsForm.sections.some((section, sectionIndex) => { 
-            if(section.sectionId === event.sectionId) {
-              if(event.Section)
-                  this.saveSettingsForm.sections[sectionIndex].name = event.Section;
-              if(event.sectionDesc)
-                  this.saveSettingsForm.sections[sectionIndex].description = event.sectionDesc;
-
-              if(event.questionId) {
-                section.questions.some((question, quesIndex) => {
-                  if(question.questionId === event.questionId) {
-                    console.log(event)
-                      this.saveSettingsForm.sections[sectionIndex].questions[quesIndex].type = event.questionType;
-                      this.saveSettingsForm.sections[sectionIndex].questions[quesIndex].text = event.question;
-                      this.saveSettingsForm.sections[sectionIndex].questions[quesIndex].required = event.isRequired;
-                  }
-                 });
-              }
-            }
-
-        });
-    }
-
-
-    
-    // this.saveSettingsForm.formId = 346;
-    // this.saveSettingsForm.sections[0].sectionId = 347;
-    // this.saveSettingsForm.sections[0].name = "Section Name";
-    // this.saveSettingsForm.sections[0].description = "description Desc";
-    // this.saveSettingsForm.sections[0].questions[0].questionId = 348;
-    // this.saveSettingsForm.sections[0].questions[0].text = "How are you?";
-    // this.saveSettingsForm.sections[0].questions[0].required = true;
-
-    console.log(this.saveSettingsForm)
-    this._formService.saveFormSettings(this.saveSettingsForm).subscribe(res => {
-
-   });
+  lockForm() {
+    this._formService.lockForm(this.formid).subscribe((res: ResultBase) => {
+      if (res.ok) {
+        alert("Form Locked");
+      } else {
+        alert(res.errors);
+      }
+    })
   }
 
-
+  submitForm() {
+    this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
+      this.saveformSetting = res.value!
+      this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
+        if (res.ok) {
+          alert('Saved');
+        } else {
+          alert(res.errors)
+        }
+      });
+    });
+  }
 }

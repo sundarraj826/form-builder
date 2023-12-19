@@ -17,12 +17,12 @@ export class QuestionTypeComponent implements OnInit {
   questionTypes = Object.values(QuestionTypes).filter(value => typeof value === 'string') as string[];
   // questionForms: FormGroup[] = [];
 
-  @Input('index') index!: number;
+  @Input('sectionIndex') sectionIndex!: number;
+  @Input('questionIndex') questionIndex!: number;
   @Input('formData') formData!: FormList;
   @Input('section') section!: FormSection;
   @Input('question') question!: Question;
   questionset: any;
-  @Output() autoSaveQuestion = new EventEmitter<void>();
   constructor(private _fb: FormBuilder, private _formService: FormService) { }
 
   form!: FormGroup;
@@ -42,24 +42,10 @@ export class QuestionTypeComponent implements OnInit {
     this.form = this._fb.group({
       options: this._fb.array([this.createItem()])
     });
-    console.log(this.question)
     if (this.question.questionType) {
       this.questionForms.get('questionType')?.setValue(this.getQuestionType(this.question.questionType));
-      this.questionForms.get('question')?.setValue(this.question.text);
     }
-    this.questionForms.valueChanges
-        .pipe(
-          debounceTime(1000),
-          distinctUntilChanged(),
-        )
-        .subscribe((res) => {
-          if(this.question.questionId) {
-            res.questionId = this.question.questionId;
-            res.questionType = this.makeEnum(res.questionType);
-            this.autoSaveQuestion.emit(res);
-          }
-        });
-    
+
   }
 
   createItem(): FormGroup {
@@ -68,7 +54,7 @@ export class QuestionTypeComponent implements OnInit {
     });
   }
 
-  
+
 
   getQuestionType(value: number): QuestionTypes {
     return QuestionTypes[value as unknown as keyof typeof QuestionTypes];
@@ -84,7 +70,6 @@ export class QuestionTypeComponent implements OnInit {
       this._formService.addQuestion(this.formData.formId,
         this.section.sectionId,
         this.makeEnum(question.value.questionType)).subscribe((res: Result<FormList>) => {
-          this.questionset = res.value?.sections;
           this._formService.setFormDetailsValue(res.value!);
         });
     }
@@ -97,7 +82,5 @@ export class QuestionTypeComponent implements OnInit {
 
   }
 
-  submitForm() {
-    console.log(this.form)
-  }
+
 }
