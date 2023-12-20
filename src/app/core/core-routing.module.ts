@@ -53,7 +53,8 @@ const routes: Routes = [
 			{ path: AppRoutes.empty, redirectTo: AppRoutes.formListing, pathMatch: 'full' },
 			{ path: AppRoutes.formListing, component: FormListingComponent },
 			{ path: AppRoutes.createFormAdmin, component: CreateFormAdminComponent },
-			{ path: 'create-form-admin/:id', component: CreateFormAdminComponent },
+			{ path: AppRoutes.createFormAdmin + `/:id`, component: CreateFormAdminComponent },
+			// { path: 'create-form-admin/:id', component: CreateFormAdminComponent },
 		]
 	},
 	{ path: AppRoutes.pageNotFound, component: PageNotFoundComponent }

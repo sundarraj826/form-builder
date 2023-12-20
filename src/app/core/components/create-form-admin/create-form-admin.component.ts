@@ -100,8 +100,10 @@ export class CreateFormAdminComponent implements OnInit {
 
 
 
-  getFormDetails(id: any): any {
+  getFormDetails(id: any) {
     this._formService.getFormSetting(id).subscribe((res: Result<FormList>) => {
+
+      // console.log(res)
       if (res.value) {
         this._formService.setFormDetailsValue(res.value);
         this.formData = res.value;
@@ -147,12 +149,13 @@ export class CreateFormAdminComponent implements OnInit {
   }
 
 
+  //lock form 
   lockForm() {
     this._formService.lockForm(this.formid).subscribe((res: Result<FormList>) => {
-      console.log(res)
+      // console.log(res)
       if (res.ok) {
-        alert("Form Locked");
-
+        alert("Form has been Locked");
+        this.router.navigate(['account/form-listing']);
       } else {
         alert(res.errors);
       }
@@ -161,15 +164,17 @@ export class CreateFormAdminComponent implements OnInit {
   }
 
   submitForm() {
-    this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
-      this.saveformSetting = res.value!
-      this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
-        if (res.ok) {
-          alert('Saved');
-        } else {
-          alert(res.errors)
-        }
-      });
+    // this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
+    //   this.saveformSetting = res.value!
+
+    // });
+
+    this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
+      if (res.ok) {
+        alert('Saved');
+      } else {
+        alert(res.errors)
+      }
     });
   }
 }

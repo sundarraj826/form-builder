@@ -14,12 +14,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class CreateSectionComponent implements OnInit {
   stepForms: FormGroup[] = [];
-  selectedTeam = '';
-  questionType = QuestionTypes;
+  // selectedTeam = '';
+  // questionType = QuestionTypes;
   questionTypes = Object.values(QuestionTypes).filter(value => typeof value === 'string') as string[];
   @Input('formData') formData!: FormList;
   questionset: number = 0;
-  createQuestion: CreateQuestion[] = []
+  // createQuestion: CreateQuestion[] = []
   saveFormFormat!: FormList;
   questionNull: Question = new Question();
 
@@ -48,10 +48,10 @@ export class CreateSectionComponent implements OnInit {
 
       this.stepForms.push(formGroup);
 
-      if (this.formData.sections[index].name)
-        this.stepForms[index].get('name')?.setValue(this.formData.sections[index].name);
-      if (this.formData.sections[index].description)
-        this.stepForms[index].get('description')?.setValue(this.formData.sections[index].description);
+      // if (this.formData.sections[index].name)
+      this.stepForms[index].get('name')?.setValue(this.formData.sections[index].name);
+      // if (this.formData.sections[index].description)
+      this.stepForms[index].get('description')?.setValue(this.formData.sections[index].description);
 
       this.stepForms[index].valueChanges
         .pipe(
@@ -59,6 +59,7 @@ export class CreateSectionComponent implements OnInit {
           distinctUntilChanged()
         )
         .subscribe((res: FormSection) => {
+          console.log(res)
           const hasValidValues = (res.name?.trim() ?? '') !== '' && (res.description?.trim() ?? '') !== '';
           if (hasValidValues) {
             this.saveFormFormat.sections[index] = {
@@ -74,10 +75,6 @@ export class CreateSectionComponent implements OnInit {
 
     });
 
-  }
-
-  get sectionName() {
-    return this
   }
 
 

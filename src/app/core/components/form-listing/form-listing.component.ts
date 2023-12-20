@@ -24,6 +24,7 @@ export class FormListingComponent implements OnInit {
 		//Get Available Forms - Admin
 		this._formService.getFormList().subscribe(
 			(response) => {
+				console.log(response)
 				this.formResponse = response;
 			},
 			(error) => {
@@ -37,8 +38,9 @@ export class FormListingComponent implements OnInit {
 	}
 
 
-	editForm(id: number) {
-		console.log('id: ', id)
+	editForm(formId: number) {
+		// console.log('id: ', formId)
+		return '../' + AppRoutes.createFormAdmin + '/' + formId;
 	}
 
 	//Delete Form 

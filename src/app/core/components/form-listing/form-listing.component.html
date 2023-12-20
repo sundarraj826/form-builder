@@ -11,12 +11,13 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="accent" *ngIf="list.status == 'locked'">{{ list.status}}</button>
-      <button mat-raised-button color="accent" *ngIf="list.status == 'draft'"
-        [routerLink]="['/account/create-form-admin', list.formId]">{{ list.status}}</button>
+      <button mat-raised-button color="accent" *ngIf="list.status == 'draft'" [routerLink]="editForm(list.formId)">{{
+        list.status}}</button>
       <button mat-raised-button color="warn" (click)="deleteForm(list.formId)">Delete</button>
     </mat-card-actions>
   </mat-card>
 
 
 
+  <!-- [routerLink]="['/account/create-form-admin', list.formId]" -->
 </div>

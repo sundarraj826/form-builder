@@ -12,7 +12,7 @@ import { debounceTime, distinctUntilChanged, first, skip } from 'rxjs/operators'
   styleUrls: ['./question-type.component.less']
 })
 export class QuestionTypeComponent implements OnInit {
-  selectedTeam = '';
+  // selectedTeam = '';
   questionType = QuestionTypes;
   questionTypes = Object.values(QuestionTypes).filter(value => typeof value === 'string') as string[];
   // questionForms: FormGroup[] = [];
@@ -25,7 +25,7 @@ export class QuestionTypeComponent implements OnInit {
   questionset: any;
   constructor(private _fb: FormBuilder, private _formService: FormService) { }
 
-  form!: FormGroup;
+  // form!: FormGroup;
   options!: FormArray;
   questionForms = new FormGroup({
     formId: new FormControl(''),
@@ -39,9 +39,9 @@ export class QuestionTypeComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    this.form = this._fb.group({
-      options: this._fb.array([this.createItem()])
-    });
+    // this.form = this._fb.group({
+    //   options: this._fb.array([this.createItem()])
+    // });
     if (this.question.questionType) {
       this.questionForms.get('questionType')?.setValue(this.getQuestionType(this.question.questionType));
     }
