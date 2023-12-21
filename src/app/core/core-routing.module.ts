@@ -23,6 +23,7 @@ import { SelectableQuestionComponent } from './components/question-type/selectab
 import { MultiSelectQuestionComponent } from './components/question-type/multi-select-question/multi-select-question.component';
 import { StarRatingQuestionComponent } from './components/question-type/star-rating-question/star-rating-question.component';
 import { TextTypeQuestionComponent } from './components/question-type/text-type-question/text-type-question.component';
+import { UserComponent } from './components/user/user.component';
 import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
 // Routes
 import { AppRoutes } from './routes/app-routes';
@@ -54,6 +55,8 @@ const routes: Routes = [
 			{ path: AppRoutes.formListing, component: FormListingComponent },
 			{ path: AppRoutes.createFormAdmin, component: CreateFormAdminComponent },
 			{ path: AppRoutes.createFormAdmin + `/:id`, component: CreateFormAdminComponent },
+			{ path: AppRoutes.user, component: UserComponent },
+
 			// { path: 'create-form-admin/:id', component: CreateFormAdminComponent },
 		]
 	},
@@ -78,6 +81,7 @@ export const components: Array<any> = [
 	MultiSelectQuestionComponent,
 	StarRatingQuestionComponent,
 	TextTypeQuestionComponent,
+	UserComponent,
 	YesOrNoQuestionComponent
 ];
 

@@ -6,5 +6,6 @@ export enum AppRoutes {
 	account = 'account',
 	formListing = 'form-listing',
 	createFormAdmin = 'create-form-admin',
+	user = 'user',
 	pageNotFound = '**'
 }

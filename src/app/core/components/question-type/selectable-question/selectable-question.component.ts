@@ -29,6 +29,9 @@ export class SelectableQuestionComponent implements OnInit {
       required: new FormControl(''),
       responseOptions: this._fb.array([]),
     });
+
+
+
     this.questionResponseOptions.get('text')?.setValue(this.question.text);
     this.questionResponseOptions.get('required')?.setValue(this.question.required);
 

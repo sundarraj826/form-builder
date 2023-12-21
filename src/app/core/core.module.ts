@@ -5,6 +5,7 @@ import { CommonModule as AngularCommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -59,7 +60,8 @@ function tryInitiateSession(authService: AuthService): () => Promise<void> {
 		MatIconModule,
 		MatStepperModule,
 		MatCheckboxModule,
-		MatSnackBarModule
+		MatSnackBarModule,
+		MatSelectModule
 	],
 	providers: [
 		{

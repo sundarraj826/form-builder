@@ -48,11 +48,11 @@ export class QuestionTypeComponent implements OnInit {
 
   }
 
-  createItem(): FormGroup {
-    return this._fb.group({
-      field: ''
-    });
-  }
+  // createItem(): FormGroup {
+  //   return this._fb.group({
+  //     field: ''
+  //   });
+  // }
 
 
 
@@ -66,6 +66,7 @@ export class QuestionTypeComponent implements OnInit {
   }
 
   addQuestion(question: any) {
+    console.log(question)
     if (!question.questionId) {
       this._formService.addQuestion(this.formData.formId,
         this.section.sectionId,

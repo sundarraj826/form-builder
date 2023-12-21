@@ -1,0 +1,66 @@
+<div class="container">
+    <h2>Form Title</h2>
+    <h4>Form Description</h4>
+    <hr />
+
+    <!-- Loop the Sections-->
+    <div class="user-section mt-4">
+        <h2>Section Name</h2>
+        <h4>Section Description</h4>
+
+        <div class="mt-4">
+            <p>Text Type Question?</p>
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label>Answer</mat-label>
+                <textarea matInput name="textTypeQuestion" id="text-type-question"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="mt-4">
+            <p>Numeric Type Question?</p>
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label>Answer</mat-label>
+                <textarea matInput name="numericTypeQuestion" id="numeric-type-question"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="mt-4">
+            <p>Single Select Type Question?</p>
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label>Select one Answer</mat-label>
+                <mat-select>
+                    <mat-option value="one">First option</mat-option>
+                    <mat-option value="two">Second option</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div class="mt-4">
+            <p>Yes or No Type Question?</p>
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label>Select the Answer</mat-label>
+                <mat-select>
+                    <mat-option value="yes">Yes</mat-option>
+                    <mat-option value="no">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div class="mt-4">
+            <p>Multiple Select Type Question?</p>
+            <mat-form-field appearance="fill" class="d-block">
+                <mat-label>Select one Answer</mat-label>
+                <mat-select [formControl]="toppings" multiple>
+
+                    <mat-option [value]="topping"
+                        *ngFor="let topping of toppingList; track topping">{{topping}}</mat-option>
+
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+    </div>
+</div>
