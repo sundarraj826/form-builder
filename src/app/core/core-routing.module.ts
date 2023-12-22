@@ -25,6 +25,7 @@ import { StarRatingQuestionComponent } from './components/question-type/star-rat
 import { TextTypeQuestionComponent } from './components/question-type/text-type-question/text-type-question.component';
 import { UserComponent } from './components/user/user.component';
 import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
+import { StarRatingComponent } from './components/common/star-rating/star-rating.component';
 // Routes
 import { AppRoutes } from './routes/app-routes';
 
@@ -82,7 +83,8 @@ export const components: Array<any> = [
 	StarRatingQuestionComponent,
 	TextTypeQuestionComponent,
 	UserComponent,
-	YesOrNoQuestionComponent
+	YesOrNoQuestionComponent,
+	StarRatingComponent
 ];
 
 @NgModule({

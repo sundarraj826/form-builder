@@ -15,7 +15,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class CreateSectionComponent implements OnInit {
   stepForms: FormGroup[] = [];
   // selectedTeam = '';
-  // questionType = QuestionTypes;
+  questionType = QuestionTypes;
   questionTypes = Object.values(QuestionTypes).filter(value => typeof value === 'string') as string[];
   @Input('formData') formData!: FormList;
   questionset: number = 0;
@@ -30,6 +30,7 @@ export class CreateSectionComponent implements OnInit {
 
 
     this._formService.getSaveFormValue().subscribe((res: FormList) => {
+      console.log(res)
       this.saveFormFormat = res;
       this.saveFormFormat.sections = [];
     });

@@ -53,12 +53,16 @@
             <mat-form-field appearance="fill" class="d-block">
                 <mat-label>Select one Answer</mat-label>
                 <mat-select [formControl]="toppings" multiple>
-
                     <mat-option [value]="topping"
                         *ngFor="let topping of toppingList; track topping">{{topping}}</mat-option>
 
                 </mat-select>
             </mat-form-field>
+        </div>
+
+        <div>
+            <tq-star-rating [rating]="rating" [starCount]="starCount"
+                (ratingUpdated)="onRatingChanged($event)"></tq-star-rating>
         </div>
 
 
