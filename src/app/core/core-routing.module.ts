@@ -22,7 +22,7 @@ import { TextQuestionComponent } from './components/question-type/text-question/
 import { SelectableQuestionComponent } from './components/question-type/selectable-question/selectable-question.component';
 import { MultiSelectQuestionComponent } from './components/question-type/multi-select-question/multi-select-question.component';
 import { StarRatingQuestionComponent } from './components/question-type/star-rating-question/star-rating-question.component';
-import { TextTypeQuestionComponent } from './components/question-type/text-type-question/text-type-question.component';
+
 import { UserComponent } from './components/user/user.component';
 import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
 import { StarRatingComponent } from './components/common/star-rating/star-rating.component';
@@ -81,7 +81,6 @@ export const components: Array<any> = [
 	SelectableQuestionComponent,
 	MultiSelectQuestionComponent,
 	StarRatingQuestionComponent,
-	TextTypeQuestionComponent,
 	UserComponent,
 	YesOrNoQuestionComponent,
 	StarRatingComponent
