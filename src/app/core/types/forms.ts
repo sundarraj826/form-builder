@@ -12,6 +12,7 @@ export class FormSection {
     name!: string;
     description!: string;
     questions!: Question[];
+    questionsWithResponses!: Question[];
 }
 
 export class CreateQuestion {

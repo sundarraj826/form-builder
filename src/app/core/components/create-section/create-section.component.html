@@ -1,4 +1,4 @@
-<mat-vertical-stepper [linear]="true" #stepper>
+<mat-horizontal-stepper [linear]="true" #stepper>
     <!-- Step 1 -->
     <mat-step *ngFor="let section of formData.sections; let i = index" [stepControl]="stepForms[i]">
         <ng-template matStepLabel>Section ID {{section.sectionId }} <button mat-icon-button
@@ -34,19 +34,27 @@
             </mat-form-field>
 
 
+
+
             <div *ngFor="let question of section.questions; let j = index" class="mb-3">
                 <tq-question-type [formData]="formData" [sectionIndex]="i" [questionIndex]="j" [section]="section"
                     [question]="question"></tq-question-type>
             </div>
-            <div *ngIf="questionset" class="mb-3">
-                <tq-question-type [formData]="formData" [sectionIndex]="i" [section]="section" [question]="questionNull"
-                    *ngFor="let number of getRange(questionset)"></tq-question-type>
-            </div>
+
+            <mat-form-field appearance="outline" class="d-block">
+                <mat-label>Create Question Set on change</mat-label>
+                <select matNativeControl formControlName="questionType" [(ngModel)]="questionType"
+                    (change)="createQuestion(section, stepForms[i])">
+                    <option>Select Question Type</option>
+                    <option [value]="type" *ngFor="let type of questionTypes">{{ type }}</option>
+                </select>
+            </mat-form-field>
+
+
             <!-- <div>
                 <button mat-raised-button color="accent" matStepperNext>Next</button>
             </div> -->
-
-            <button mat-raised-button color="primary" (click)="addQuestionSet()">Add Question</button>
+            <!-- <button mat-raised-button color="primary" (click)="createQuestion()">Create Question</button> -->
         </form>
     </mat-step>
-</mat-vertical-stepper>
+</mat-horizontal-stepper>

@@ -1,12 +1,13 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of, throwError } from 'rxjs';
 
 import { FormList, ResponseOptions } from '../types/forms';
 import { Result } from '../types/result';
 import { AbstractControl, Form } from '@angular/forms';
-import { switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { ResultBase } from '../types/result-base';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +18,7 @@ export class FormService {
 	private saveFormDetails: FormList = new FormList();
 
 
-	constructor(private _httpClient: HttpClient) { }
+	constructor(private _httpClient: HttpClient, private _snackBar: MatSnackBar) { }
 
 	setSaveFormValue(value: FormList) {
 		this.saveFormDetails = value;
@@ -116,25 +117,37 @@ export class FormService {
 	}
 
 	saveFormSettings(form: FormList): Observable<Result<FormList>> {
-		return this._httpClient.post<Result<FormList>>('Api/Form/SaveSettings', form);
+		return this._httpClient.post<Result<FormList>>('Api/Form/SaveSettings', form).pipe(
+			catchError(this.handleError)
+		);
 
 	}
-
+	private handleError(error: HttpErrorResponse) {
+		if (error.status === 400) {
+			console.error('Bad Request:', error.error);
+			return throwError(error.error); // Return the error response
+		} else {
+			console.error('An error occurred:', error.error);
+			return throwError('Something went wrong; please try again later.');
+		}
+	}
 
 	autoSaveFormValue(): Observable<Result<FormList>> {
 		return this.getSaveFormValue().pipe(
-			// tap(data => {
-			// 	console.log('Saving ....', data)
-			// }),
-			switchMap(data => this.saveFormSettings(data)),
-			// tap(res => {
-			// 	if (res.ok) {
-			// 		console.log('Saved');
+			tap(data => {
+				this._snackBar.open('Saving...', undefined, { duration: 500 });
 
-			// 	} else {
-			// 		console.log('Errors:', res);
-			// 	}
-			// })
+			}),
+			switchMap(data => this.saveFormSettings(data)),
+			tap(res => {
+				if (res.ok) {
+					this._snackBar.open('Saved', undefined, { duration: 500 });
+
+
+				} else {
+					console.log('Errors:', res);
+				}
+			})
 		);
 	}
 }

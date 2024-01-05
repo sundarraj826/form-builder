@@ -23,6 +23,7 @@ export class CreateFormAdminComponent implements OnInit {
   saveSettingsForm!: FormList;
   stepForms: FormGroup[] = [];
   saveFormFormat!: FormList;
+  appRoute = AppRoutes;
   @ViewChild('qesSelect') qesSelect!: ElementRef;
 
   createForm = new FormGroup({
@@ -164,17 +165,18 @@ export class CreateFormAdminComponent implements OnInit {
   }
 
   submitForm() {
-    // this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
-    //   this.saveformSetting = res.value!
+    this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
+      this.saveformSetting = res.value!
+      this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
+        console.log(res)
 
-    // });
-
-    this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
-      if (res.ok) {
-        alert('Saved');
-      } else {
-        alert(res.errors)
+      }, (error) => {
+        // Handle error
+        console.error('Error:', error);
       }
+
+      );
+
     });
   }
 }

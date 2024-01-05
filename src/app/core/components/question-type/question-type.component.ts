@@ -22,7 +22,6 @@ export class QuestionTypeComponent implements OnInit {
   @Input('formData') formData!: FormList;
   @Input('section') section!: FormSection;
   @Input('question') question!: Question;
-  questionset: any;
   constructor(private _fb: FormBuilder, private _formService: FormService) { }
 
   // form!: FormGroup;
@@ -39,12 +38,6 @@ export class QuestionTypeComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    // this.form = this._fb.group({
-    //   options: this._fb.array([this.createItem()])
-    // });
-    if (this.question.questionType) {
-      this.questionForms.get('questionType')?.setValue(this.getQuestionType(this.question.questionType));
-    }
 
   }
 
@@ -60,21 +53,10 @@ export class QuestionTypeComponent implements OnInit {
     return QuestionTypes[value as unknown as keyof typeof QuestionTypes];
   }
 
-  makeEnum(value: number | string) {
-    const enumValue: QuestionTypes = QuestionTypes[value as keyof typeof QuestionTypes];
-    return enumValue!;
-  }
-
-  addQuestion(question: any) {
-    console.log(question)
-    if (!question.questionId) {
-      this._formService.addQuestion(this.formData.formId,
-        this.section.sectionId,
-        this.makeEnum(question.value.questionType)).subscribe((res: Result<FormList>) => {
-          this._formService.setFormDetailsValue(res.value!);
-        });
-    }
-  }
+  // makeEnum(value: number | string) {
+  //   const enumValue: QuestionTypes = QuestionTypes[value as keyof typeof QuestionTypes];
+  //   return enumValue!;
+  // }
 
   deleteQuestion(question: Question) {
     this._formService.deleteQuestion(this.formData.formId, this.section.sectionId, question.questionId).subscribe((res: Result<FormList>) => {

@@ -1,17 +1,8 @@
 <form [formGroup]="questionForms">
-    <mat-form-field appearance="outline" class="d-block">
-        <mat-label>Question Type</mat-label>
-        <select matNativeControl required formControlName="questionType" (change)="addQuestion(questionForms)"
-            #qesSelect>
-            <option>Select Question Type</option>
-            <option [value]="type" *ngFor="let type of questionTypes">{{ type }}</option>
-        </select>
-    </mat-form-field>
-    <input type="hidden" id="formId" formControlName="formId" [(ngModel)]="formData.formId">
-    <input type="hidden" id="sectionId" formControlName="sectionId" [(ngModel)]="section.sectionId">
+    {{getQuestionType(question.questionType)}}
 
     <!-- ng Switch Qustion Type-->
-    <div [ngSwitch]="makeEnum(questionForms.get('questionType')?.value)">
+    <div [ngSwitch]="question.questionType">
         <div *ngSwitchCase="questionType.Numeric">
             <!-- Numeric Question-->
             <tq-text-question [sectionId]="section.sectionId" [questionId]="question.questionId" [question]="question"
@@ -61,9 +52,13 @@
             </tq-text-question>
             <!-- Yes or No Type End-->
         </div>
+        <input type="hidden" id="formId" formControlName="formId" [(ngModel)]="formData.formId">
+        <input type="hidden" id="sectionId" formControlName="sectionId" [(ngModel)]="section.sectionId">
 
-        <button mat-raised-button color="warn" (click)="deleteQuestion(question)">Delete
-            Question</button>
+
+        <button mat-raised-button color="warn" (click)="deleteQuestion(question)">
+            Delete Question
+        </button>
 
     </div>
 

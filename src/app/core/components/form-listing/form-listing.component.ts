@@ -5,6 +5,7 @@ import { FormList } from '../../types/forms';
 import { FormService } from '../../services/form.service';
 import { Result } from '../../types/result';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -14,10 +15,14 @@ import { HttpClient } from '@angular/common/http';
 	styleUrls: ['./form-listing.component.less']
 })
 export class FormListingComponent implements OnInit {
+	authService: AuthService;
 	formResponse!: Result<FormList[]>;
+	appRoute = AppRoutes;
 
 
-	constructor(private _formService: FormService, private _http: HttpClient) { }
+	constructor(private _formService: FormService, private _http: HttpClient, public _authService: AuthService) {
+		this.authService = _authService;
+	}
 
 	ngOnInit() {
 
