@@ -15,11 +15,11 @@ export class FormSection {
     questionsWithResponses!: Question[];
 }
 
-export class CreateQuestion {
-    formId!: number;
-    sectionId!: number;
-    questionType!: number;
-}
+// export class CreateQuestion {
+//     formId!: number;
+//     sectionId!: number;
+//     questionType!: number;
+// }
 
 export class Question {
     questionId!: number;
@@ -28,6 +28,7 @@ export class Question {
     questionType!: number;
     type!: number;
     responseOptions!: Record<string, string>;
+    response!: string;
 }
 
 export class ResponseOptions {
@@ -37,5 +38,12 @@ export class ResponseOptions {
     responseOptions!: Record<string, string>;
 }
 
+export class responses {
+    formId!: number;
+    responses!: [{
+        questionId: number,
+        response: string
+    }]
+}
 
 

@@ -20,10 +20,9 @@ import { CreateFormAdminComponent } from './components/create-form-admin/create-
 import { CreateSectionComponent } from './components/create-section/create-section.component';
 import { TextQuestionComponent } from './components/question-type/text-question/text-question.component';
 import { SelectableQuestionComponent } from './components/question-type/selectable-question/selectable-question.component';
-import { MultiSelectQuestionComponent } from './components/question-type/multi-select-question/multi-select-question.component';
-import { StarRatingQuestionComponent } from './components/question-type/star-rating-question/star-rating-question.component';
-
+import { UserFormResponseComponent } from './components/user-form-response/user-form-preview.component';
 import { UserComponent } from './components/user/user.component';
+import { UserQuestionsComponent } from './components/user/user-questions/user-questions.component';
 import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
 import { StarRatingComponent } from './components/common/star-rating/star-rating.component';
 import { AdminPreviewComponent } from './components/admin-preview/admin-preview.component';
@@ -59,6 +58,7 @@ const routes: Routes = [
 			{ path: AppRoutes.createFormAdmin + `/:id`, component: CreateFormAdminComponent },
 			{ path: AppRoutes.adminPreview + '/:id', component: AdminPreviewComponent },
 			{ path: AppRoutes.user + '/:id', component: UserComponent },
+			{ path: AppRoutes.userFormResponse + '/:id', component: UserFormResponseComponent },
 
 			// { path: 'create-form-admin/:id', component: CreateFormAdminComponent },
 		]
@@ -81,16 +81,16 @@ export const components: Array<any> = [
 	QuestionTypeComponent,
 	TextQuestionComponent,
 	SelectableQuestionComponent,
-	MultiSelectQuestionComponent,
-	StarRatingQuestionComponent,
 	UserComponent,
+	UserQuestionsComponent,
 	YesOrNoQuestionComponent,
 	StarRatingComponent,
-	AdminPreviewComponent
+	AdminPreviewComponent,
+	UserFormResponseComponent
 ];
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],
-	exports: [RouterModule],
+	exports: [RouterModule]
 })
 export class CoreRoutingModule { }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 // import { FormService } from '../../services/form.service';
 import { UsersService } from '../../services/users.service';
 import { Result } from '../../types/result';
@@ -7,8 +7,9 @@ import { FormList } from '../../types/forms';
 import { QuestionTypes } from '../../types/question-type';
 import { ActivatedRoute } from '@angular/router';
 import { coerceStringArray } from '@angular/cdk/coercion';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // import { StarRatingColor } from '../common/star-rating/star-rating.component';
-
+import { UserQuestionsComponent } from './user-questions/user-questions.component';
 @Component({
   selector: 'tq-user',
   templateUrl: './user.component.html',
@@ -16,23 +17,11 @@ import { coerceStringArray } from '@angular/cdk/coercion';
 })
 export class UserComponent implements OnInit {
   // toppings = new FormControl('');
-
+  @ViewChild(UserQuestionsComponent) userQuestionsComponent!: UserQuestionsComponent;
   questionType = QuestionTypes;
-
   formSetting!: FormList;
-  rating: number = 0;
-  starCount: number = 5;
 
-  userAnswersForm = new FormGroup({
-    numericAnswer: new FormControl(),
-    signleTypeAnswer: new FormControl(),
-    multiTypeAnswer: new FormControl(),
-    // ratingAnswer: new FormControl(),
-    texTypeAnswer: new FormControl(),
-    booleanTypeAnswer: new FormControl()
-  })
-
-  constructor(private _usersService: UsersService, private route: ActivatedRoute) { }
+  constructor(private _usersService: UsersService, private route: ActivatedRoute, private _fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -41,14 +30,6 @@ export class UserComponent implements OnInit {
         this.getFormDetails(id);
       }
     });
-
-  }
-
-  //Star Ratings
-  onRatingChanged(rating: number) {
-    // console.log(rating);
-    this.rating = rating;
-
   }
 
   //Get form response
@@ -57,9 +38,17 @@ export class UserComponent implements OnInit {
       this.formSetting = res.value!;
     });
   }
-
+  submitForm() {
+    if (this.userQuestionsComponent && this.userQuestionsComponent.userAnswersForm.valid) {
+      this.userQuestionsComponent.onSubmit();
+    } else {
+      this.userQuestionsComponent.userAnswersForm.markAllAsTouched();
+    }
+  }
   userFormSubmit() {
-    console.log(this.userAnswersForm.value)
+    this._usersService.submitResponses(this.formSetting.formId).subscribe((res: any) => {
+      console.log(res)
+    })
   }
 
 }

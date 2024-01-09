@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormList, CreateQuestion, FormSection, Question } from '../../types/forms';
+import { FormList, FormSection, Question } from '../../types/forms';
 import { QuestionTypes } from '../../types/question-type';
 import { FormService } from '../../services/form.service';
 import { Result } from '../../types/result';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControlService } from '../../services/form-control.service';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'tq-create-section',
@@ -22,33 +24,36 @@ export class CreateSectionComponent implements OnInit {
   // createQuestion: CreateQuestion[] = []
   saveFormFormat!: FormList;
   questionNull: Question = new Question();
+  formGroup!: FormGroup;
+  @ViewChild('stepper') private myStepper!: MatStepper;
 
-
-  constructor(private _fb: FormBuilder, private _formService: FormService, private _http: HttpClient) { }
+  constructor(private _fb: FormBuilder, private _formService: FormService, private _http: HttpClient, private formControlService: FormControlService) { }
 
   ngOnInit(): void {
-
-
     this._formService.getSaveFormValue().subscribe((res: FormList) => {
-      console.log(res)
       this.saveFormFormat = res;
       this.saveFormFormat.sections = [];
     });
 
 
-    this.formData?.sections.forEach((section, index) => {
-      const formGroup = this._fb.group({
-        name: new FormControl(''),
+    this.formData?.sections.forEach((_section, index) => {
+      this.formGroup = this._fb.group({
+        name: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(200)
+        ]),
         description: new FormControl(''),
         sectionId: [''],
         formId: [''],
         questionType: [''],
       });
 
+      this.formControlService.registerForm(this.formGroup);
 
 
 
-      this.stepForms.push(formGroup);
+      this.stepForms.push(this.formGroup);
 
       if (this.formData.sections[index].name)
         this.stepForms[index].get('name')?.setValue(this.formData.sections[index].name);

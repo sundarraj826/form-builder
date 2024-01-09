@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, of, throwError } from 'rxjs';
 
-import { FormList, ResponseOptions } from '../types/forms';
+import { FormList, ResponseOptions, responses } from '../types/forms';
 import { Result } from '../types/result';
 import { AbstractControl, Form } from '@angular/forms';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -101,6 +101,24 @@ export class FormService {
 
 	}
 
+
+	deleteResponseOptions(formId: number, sectionId: number, questionId: number, options: string): Observable<Result<FormList>> {
+
+		const httpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json'
+			}),
+			body: {
+				"formId": formId,
+				"sectionId": sectionId,
+				"questionId": questionId,
+				"options": [options]
+			}
+		};
+		return this._httpClient.delete<Result<FormList>>(`Api/Form/DeleteResponseOptions`, httpOptions);
+
+	}
+
 	deleteSection(formId: number, sectionId: number): Observable<Result<FormList>> {
 
 		const httpOptions = {
@@ -122,6 +140,8 @@ export class FormService {
 		);
 
 	}
+
+
 	private handleError(error: HttpErrorResponse) {
 		if (error.status === 400) {
 			console.error('Bad Request:', error.error);
@@ -145,7 +165,7 @@ export class FormService {
 
 
 				} else {
-					console.log('Errors:', res);
+					catchError(this.handleError)
 				}
 			})
 		);

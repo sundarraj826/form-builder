@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControlService } from 'src/app/core/services/form-control.service';
 import { FormService } from 'src/app/core/services/form.service';
 import { FormList, Question, ResponseOptions } from 'src/app/core/types/forms';
+import { Result } from 'src/app/core/types/result';
 
 
 @Component({
@@ -18,7 +20,8 @@ export class SelectableQuestionComponent implements OnInit {
   @Input() questionIndex!: number;
   responseOptionsSave: ResponseOptions = new ResponseOptions();;
   questionResponseOptions!: FormGroup;
-  constructor(private _fb: FormBuilder, private _formService: FormService) { }
+  deleteResponseOptionsStatus: boolean = false;
+  constructor(private _fb: FormBuilder, private _formService: FormService, private formControlService: FormControlService) { }
 
   ngOnInit() {
     this._formService.getSaveFormValue().subscribe((res: FormList) => {
@@ -30,7 +33,7 @@ export class SelectableQuestionComponent implements OnInit {
       responseOptions: this._fb.array([]),
     });
 
-
+    this.formControlService.registerForm(this.questionResponseOptions);
 
     this.questionResponseOptions.get('text')?.setValue(this.question.text);
     this.questionResponseOptions.get('required')?.setValue(this.question.required);
@@ -46,6 +49,10 @@ export class SelectableQuestionComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged()
     ).subscribe((res: Question) => {
+      if (this.deleteResponseOptionsStatus == true) {
+        this.deleteResponseOptionsStatus = false;
+        return;
+      }
       if (Object.keys(res.responseOptions).length > 0) {
         const dataObject: Record<string, string> = {};
         this.responseOptions.getRawValue().forEach((optionAnswer: { optionAnswer: string }, index: number) => {
@@ -55,10 +62,9 @@ export class SelectableQuestionComponent implements OnInit {
         this.responseOptionsSave.sectionId = this.sectionId;
         this.responseOptionsSave.questionId = this.questionId;
         this.responseOptionsSave.responseOptions = dataObject;
-        this._formService.saveResponseOptions(this.responseOptionsSave).subscribe();
         const sectionIndex = this.saveFormFormat.sections.findIndex(section => section.sectionId === this.sectionId);
         const question = this.saveFormFormat.sections[sectionIndex].questions[this.questionIndex];
-
+        this._formService.saveResponseOptions(this.responseOptionsSave).subscribe();
         this.saveFormFormat.sections[sectionIndex].questions[this.questionIndex] = {
           ...question,
           questionId: this.questionId,
@@ -90,8 +96,15 @@ export class SelectableQuestionComponent implements OnInit {
     );
 
   }
-  deleteOption(i: any) {
-    this.responseOptions.removeAt(i);
+
+  deleteOption(i: number) {
+    this.deleteResponseOptionsStatus = true;
+    const resOptKey = Object.keys(this.question.responseOptions).find(key => this.question.responseOptions[key] === this.responseOptions.controls[i].get('optionAnswer')?.value);;
+    this._formService.deleteResponseOptions(this.saveFormFormat.formId, this.sectionId, this.questionId, resOptKey!.toString())
+      .subscribe((res: Result<FormList>) => {
+        this.responseOptions.removeAt(i);
+      })
+
   }
 
 }

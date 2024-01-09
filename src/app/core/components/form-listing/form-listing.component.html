@@ -3,21 +3,31 @@
     class="mb-3">Create Form</button>
 
   <mat-card class="example-card" *ngFor="let list of formResponse?.value" style="margin-bottom: 20px">
+
     <mat-card-header>
       <mat-card-title>{{ list.formId}} </mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
       <h5>{{ list.title}}</h5>
       <p>{{ list.description }}</p>
     </mat-card-content>
+
     <mat-card-actions *ngIf="authService.currentUser?.userType === 1">
       <button mat-raised-button color="accent" *ngIf="list.status == 'locked'">{{ list.status}}</button>
       <button mat-raised-button color="accent" *ngIf="list.status == 'draft'" [routerLink]="editForm(list.formId)">{{
         list.status}}</button>
       <button mat-raised-button color="warn" (click)="deleteForm(list.formId)">Delete</button>
     </mat-card-actions>
+
     <mat-card-actions *ngIf="authService.currentUser?.userType === 2">
-      <button mat-raised-button color="accent" [routerLink]="['../'+appRoute.user, list.formId]">View</button>
+      <mat-card-content>
+        <h5>{{ list.status | removeUnderscore | titlecase}}</h5>
+      </mat-card-content>
+      <button mat-raised-button color="accent" [routerLink]="['../'+appRoute.user, list.formId]"
+        *ngIf="list.status != 'completed'">Start</button>
+      <a mat-raised-button color="accent" [routerLink]="['../'+appRoute.userFormResponse, list.formId]"
+        *ngIf="list.status == 'completed'" target="_blank">Preview the Answer</a>
     </mat-card-actions>
   </mat-card>
 

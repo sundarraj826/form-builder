@@ -5,6 +5,7 @@ import { QuestionTypes } from '../../types/question-type';
 import { FormService } from '../../services/form.service';
 import { Result } from '../../types/result';
 import { debounceTime, distinctUntilChanged, first, skip } from 'rxjs/operators';
+import { FormControlService } from '../../services/form-control.service';
 
 @Component({
   selector: 'tq-question-type',
@@ -22,7 +23,7 @@ export class QuestionTypeComponent implements OnInit {
   @Input('formData') formData!: FormList;
   @Input('section') section!: FormSection;
   @Input('question') question!: Question;
-  constructor(private _fb: FormBuilder, private _formService: FormService) { }
+  constructor(private _fb: FormBuilder, private _formService: FormService, private formControlService: FormControlService) { }
 
   // form!: FormGroup;
   options!: FormArray;
@@ -38,6 +39,7 @@ export class QuestionTypeComponent implements OnInit {
   })
 
   ngOnInit(): void {
+    this.formControlService.registerForm(this.questionForms);
 
   }
 

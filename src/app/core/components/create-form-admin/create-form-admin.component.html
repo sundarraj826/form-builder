@@ -38,7 +38,7 @@
   </form>
 
   <div *ngIf="formData">
-    <button mat-button mat-raised-button color="primary" (click)="createSection()">Create Section</button>
+    <button mat-button mat-raised-button color="primary" (click)="createSection()" class="mt-3">Create Section</button>
     <tq-create-section [formData]="saveSettingsForm"></tq-create-section>
   </div>
 

@@ -1,14 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormList } from '../../types/forms';
 import { Result } from '../../types/result';
 import { FormService } from '../../services/form.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
 import { QuestionTypes } from '../../types/question-type';
 import { AppRoutes } from '../../routes/app-routes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { empty } from 'rxjs';
 import { ResultBase } from '../../types/result-base';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControlService } from '../../services/form-control.service';
 
 @Component({
   selector: 'create-form-admin',
@@ -41,7 +42,7 @@ export class CreateFormAdminComponent implements OnInit {
   })
   saveformSetting!: FormList;
 
-  constructor(private _formService: FormService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {
+  constructor(private _formService: FormService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private formControlService: FormControlService, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
@@ -82,9 +83,9 @@ export class CreateFormAdminComponent implements OnInit {
 
   }
 
-  get backBtn(): string {
-    return '../' + AppRoutes.formListing;
-  }
+  // get backBtn(): string {
+  //   return '../' + AppRoutes.formListing;
+  // }
 
   createFormSubmit() {
     this._formService.addCreateForm(this.createForm.controls.title.value, this.createForm.controls.description.value).subscribe(
@@ -163,20 +164,30 @@ export class CreateFormAdminComponent implements OnInit {
 
     })
   }
+  private setFocus(control: AbstractControl) {
+    const ngControl = control as any;
 
-  submitForm() {
-    this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
-      this.saveformSetting = res.value!
-      this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
-        console.log(res)
+    if (ngControl && ngControl['control'] instanceof NgControl) {
+      const formControlDirective = ngControl['control'] as NgControl;
+      const controlElement = formControlDirective.valueAccessor as unknown as HTMLElement;
 
-      }, (error) => {
-        // Handle error
-        console.error('Error:', error);
+      if (controlElement) {
+        controlElement.focus();
       }
+    }
+  }
+  submitForm() {
+    this.formControlService.markAllFormsAsTouched();
+    if (this.formControlService.formsValid()) {
+      this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
+        this.saveformSetting = res.value!
+        this._formService.saveFormSettings(this.saveformSetting).subscribe((res: any) => {
+          alert(res)
+        });
 
-      );
-
-    });
+      });
+    } else {
+      alert('You have some required fields left... Please fill all required fields to save the form settings')
+    }
   }
 }

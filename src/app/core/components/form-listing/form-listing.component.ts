@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 
 
-
 @Component({
 	selector: 'tq-form-listing',
 	templateUrl: './form-listing.component.html',
@@ -20,6 +19,7 @@ export class FormListingComponent implements OnInit {
 	appRoute = AppRoutes;
 
 
+
 	constructor(private _formService: FormService, private _http: HttpClient, public _authService: AuthService) {
 		this.authService = _authService;
 	}
@@ -29,8 +29,9 @@ export class FormListingComponent implements OnInit {
 		//Get Available Forms - Admin
 		this._formService.getFormList().subscribe(
 			(response) => {
-				console.log(response)
+
 				this.formResponse = response;
+				console.log(this.formResponse.value)
 			},
 			(error) => {
 				console.error('Error fetching response:', error);

@@ -8,5 +8,6 @@ export enum AppRoutes {
 	createFormAdmin = 'create-form-admin',
 	adminPreview = 'admin-preview',
 	user = 'user',
+	userFormResponse = 'user-form-preview',
 	pageNotFound = '**'
 }

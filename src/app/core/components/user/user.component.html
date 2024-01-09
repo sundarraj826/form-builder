@@ -1,98 +1,21 @@
 <div class="container" *ngIf="formSetting">
-    <form action="" [formGroup]="userAnswersForm" (ngSubmit)="userFormSubmit()">
-        <h2>{{formSetting.title}}</h2>
-        <h4>{{formSetting.description}}</h4>
-        <hr />
-        <mat-vertical-stepper [linear]="true" #stepper>
-            <!-- Step 1 -->
-            <mat-step *ngFor="let section of formSetting.sections; let i = index">
-                <ng-template matStepLabel>{{section.name}}</ng-template>
-                <h4 class="mb-5">{{ section.description}}</h4>
+    <h2>{{formSetting.title}}</h2>
+    <h4>{{formSetting.description}}</h4>
+    <hr />
+    <mat-vertical-stepper [linear]="true" #stepper>
+        <!-- Step 1 -->
+        <mat-step *ngFor="let section of formSetting.sections; let i = index">
+            <ng-template matStepLabel>{{section.name}}</ng-template>
+            <h4 class="mb-5">{{ section.description}}</h4>
+            <tq-user-questions *ngFor="let question of section.questionsWithResponses; let j = index"
+                [questions]="question" [index]="j" [formId]="formSetting.formId"
+                (formSubmitted)="userFormSubmit()"></tq-user-questions>
 
-                <div *ngFor="let question of section.questionsWithResponses; let j = index" class="mb-3">
-                    {{question.text}}
-                    <div [ngSwitch]="question.questionType">
-                        <div *ngSwitchCase="questionType.Numeric">
-                            <!-- Numeric Question-->
-                            <mat-form-field appearance="fill" class="d-block">
-                                <mat-label for="numeric-type-question">Answer</mat-label>
-                                <input type="number" matInput name="numericAnswer" id="numeric-type-question"
-                                    formControlName="numericAnswer">
-                            </mat-form-field>
-                        </div>
-
-
-                        <div *ngSwitchCase="questionType.SingleSelectDropdown">
-                            <!-- Signle Select DropDown Start-->
-                            <mat-form-field appearance="fill" class="d-block">
-                                <mat-label>Select one Answer</mat-label>
-                                <mat-select formControlName="signleTypeAnswer">
-                                    <mat-option>Select the Answer</mat-option>
-                                    <mat-option [value]="signleOption"
-                                        *ngFor="let signleOption of question.responseOptions| keyvalue">{{signleOption.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <!-- Signle Select DropDown End-->
-                        </div>
-
-
-                        <div *ngSwitchCase="questionType.MultiSelectDropdown">
-                            <!-- Multi Select DropDown Start-->
-                            <mat-form-field appearance="fill" class="d-block">
-                                <mat-label>Select Multiple Answer</mat-label>
-                                <mat-select multiple formControlName="multiTypeAnswer">
-                                    <mat-option>Select the Answer</mat-option>
-                                    <mat-option [value]="multiOption"
-                                        *ngFor="let multiOption of question.responseOptions | keyvalue">{{multiOption.value}}</mat-option>
-
-                                </mat-select>
-                            </mat-form-field>
-                            <!-- Multi Select DropDown End-->
-                        </div>
-
-
-                        <div *ngSwitchCase="questionType.StarRating">
-                            <!-- Star Rating Start-->
-                            <tq-star-rating [rating]="rating" [starCount]="starCount"
-                                (ratingUpdated)="onRatingChanged($event)"></tq-star-rating>
-                            <!-- name="ratingAnswer" formControlName="ratingAnswer"-->
-                            <!-- Star Rating End-->
-                        </div>
-
-
-                        <div *ngSwitchCase="questionType.TextResponse">
-                            <!-- Text Type Start-->
-                            <mat-form-field appearance="fill" class="d-block">
-                                <mat-label>Answer</mat-label>
-                                <textarea matInput name="texTypeAnswer" id="text-type-question"
-                                    formControlName="texTypeAnswer"></textarea>
-                            </mat-form-field>
-                            <!-- Text Type End-->
-                        </div>
-
-
-                        <div *ngSwitchCase="questionType.YesNoResponse">
-                            <!-- Yes or No Type Start-->
-                            <div class="mt-4">
-                                <mat-radio-group formControlName="booleanTypeAnswer">
-                                    <div>
-                                        <mat-radio-button value="yes">Yes</mat-radio-button>
-                                    </div>
-                                    <div>
-                                        <mat-radio-button value="no">No</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
-                            <!-- Yes or No Type End-->
-                        </div>
-                    </div>
-                </div>
-            </mat-step>
-        </mat-vertical-stepper>
-        <div class="d-flex justify-content-end">
-            <button mat-raised-button color="primary" class="mt-3 mb-3" type="submit">Submit</button>
-        </div>
-    </form>
+        </mat-step>
+    </mat-vertical-stepper>
+    <div class="d-flex justify-content-end">
+        <button mat-raised-button color="primary" class="mt-3 mb-3" (click)="submitForm()" type="submit">Submit</button>
+    </div>
 
 
 </div>

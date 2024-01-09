@@ -10,6 +10,7 @@ export class StarRatingComponent implements OnInit {
 
   @Input('rating') rating!: number;
   @Input('starCount') starCount!: number;
+  @Input('disabled') disabled!: boolean;
   // @Input('color') color: string = 'primary';
   @Output() ratingUpdated = new EventEmitter();
 
@@ -26,9 +27,9 @@ export class StarRatingComponent implements OnInit {
   }
   onClick(rating: number) {
     console.log(rating);
-    this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
-      duration: this.snackBarDuration,
-    });
+    // this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
+    //   duration: this.snackBarDuration,
+    // });
     this.ratingUpdated.emit(rating);
     return false;
   }

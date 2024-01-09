@@ -18,6 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { RemoveUnderscorePipe } from './types/key-pipe';
+
 
 // Components
 import { RootComponent } from './components/root/root.component';
@@ -40,7 +42,7 @@ function tryInitiateSession(authService: AuthService): () => Promise<void> {
 }
 
 @NgModule({
-	declarations: components.concat([DynamicHostDirective]),
+	declarations: components.concat([DynamicHostDirective, RemoveUnderscorePipe]),
 	imports: [
 		BrowserAnimationsModule,
 		AngularCommonModule,

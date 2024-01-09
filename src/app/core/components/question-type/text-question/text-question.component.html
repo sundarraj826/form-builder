@@ -1,7 +1,7 @@
 <form [formGroup]="questionForms">
     <mat-form-field appearance="outline" class="d-block">
         <mat-label for="text">Enter the Question</mat-label>
-        <input type="text" matInput id="text" formControlName="text">
+        <input type="text" matInput id="text" formControlName="text" required>
     </mat-form-field>
     <mat-checkbox formControlName="required">Is Required</mat-checkbox>
 </form>
