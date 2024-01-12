@@ -1,5 +1,5 @@
 <div class="mb-3">
-    {{questions.text}}
+    <h5>{{questions.text}} <span *ngIf="questions.required" class="text-danger">*</span></h5>
     <form action="" [formGroup]="userAnswersForm" (ngSubmit)="onSubmit()">
         <div [ngSwitch]="questions.questionType">
             <div *ngSwitchCase="questionType.Numeric">
@@ -8,7 +8,12 @@
                     <mat-label for="numeric-type-question">Answer</mat-label>
                     <input type="number" matInput name="numericAnswer" id="numeric-type-question"
                         formControlName="question{{index}}">
+
                 </mat-form-field>
+                <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
+                    <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
+                </mat-error>
+
             </div>
 
 
@@ -22,6 +27,9 @@
                             [value]="singleTypeAnswer.key">{{singleTypeAnswer.value}}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
+                    <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
+                </mat-error>
                 <!-- Signle Select DropDown End-->
             </div>
 
@@ -30,13 +38,17 @@
                 <!-- Multi Select DropDown Start-->
                 <mat-form-field appearance="fill" class="d-block">
                     <mat-label>Select Multiple Answer</mat-label>
-                    <mat-select multiple formControlName="question{{index}}">
+
+                    <mat-select multiple formControlName="question{{index}}" name="multipleAnswer">
                         <mat-option>Select the Answer</mat-option>
                         <mat-option [value]="multiOption"
                             *ngFor="let multiOption of questions.responseOptions | keyvalue"
                             [value]="multiOption.key">{{multiOption.value}}</mat-option>
 
                     </mat-select>
+                    <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
+                        <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
+                    </mat-error>
                 </mat-form-field>
                 <!-- Multi Select DropDown End-->
             </div>
@@ -44,9 +56,16 @@
 
             <div *ngSwitchCase="questionType.StarRating">
                 <!-- Star Rating Start-->
-                <tq-star-rating [rating]="rating" [starCount]="5" (ratingUpdated)="onRatingChanged($event)"
-                    [disabled]="false"></tq-star-rating>
+                <tq-star-rating [rating]="rating" [starCount]="5" (ratingUpdated)="onRatingChanged($event, index)"
+                    [disabled]="false" formControlName="question{{index}}" name="starRatingAnswer"></tq-star-rating>
+                <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
+                    <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
+                </mat-error>
+                <!-- {{index}} -->
                 <!-- Star Rating End-->
+
+
+
             </div>
 
 
@@ -59,9 +78,7 @@
 
                 </mat-form-field>
                 <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
-                    <p *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">
-                        Answer is
-                        required</p>
+                    <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
                 </mat-error>
 
                 <!-- Text Type End-->
@@ -69,9 +86,10 @@
 
 
             <div *ngSwitchCase="questionType.YesNoResponse">
+
                 <!-- Yes or No Type Start-->
                 <div class="mt-4">
-                    <mat-radio-group formControlName="question{{index}}">
+                    <mat-radio-group formControlName="question{{index}}" name="yesNoAnswer">
                         <div>
                             <mat-radio-button value="true">Yes</mat-radio-button>
                         </div>
@@ -79,9 +97,15 @@
                             <mat-radio-button value="false">No</mat-radio-button>
                         </div>
                     </mat-radio-group>
+                    <mat-error *ngIf="!userAnswersForm?.valid && ( userAnswersForm?.touched || userAnswersForm?.dirty)">
+                        <span *ngIf="userAnswersForm.get('question' + index)?.hasError('required')">Required</span>
+                    </mat-error>
                 </div>
                 <!-- Yes or No Type End-->
             </div>
+
+
+            <!-- {{ questions | json}} -->
         </div>
     </form>
 </div>

@@ -43,7 +43,11 @@ export class CreateSectionComponent implements OnInit {
           Validators.minLength(2),
           Validators.maxLength(200)
         ]),
-        description: new FormControl(''),
+        description: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(200)
+        ]),
         sectionId: [''],
         formId: [''],
         questionType: [''],

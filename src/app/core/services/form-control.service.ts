@@ -16,9 +16,12 @@ export class FormControlService {
             this.markFormGroupTouched(form);
         });
     }
+
     formsValid(): boolean {
         return this.forms.every((form) => form.valid);
     }
+
+
     private markFormGroupTouched(formGroup: FormGroup) {
         Object.values(formGroup.controls).forEach((control) => {
             control.markAsTouched();

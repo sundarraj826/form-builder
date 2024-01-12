@@ -10,47 +10,50 @@
         </div>
     </div>
 
-
-
-    <div *ngFor="let section of formResponse.sections; let i = index">
-        <p>
-            <strong>Section Name:</strong>
-            {{ section.name }}
-        </p>
-
-        <p>
-            <strong>Section Description:</strong>
-            {{ section.description }}
-        </p>
-
-        <div *ngFor="let question of section.questionsWithResponses; let i = index">
+    <mat-vertical-stepper [linear]="true" #stepper>
+        <mat-step *ngFor="let section of formResponse.sections; let i = index">
+            <ng-template matStepLabel>Section {{i + 1}}</ng-template>
             <p>
-                <strong>Question {{ i + 1 }}:</strong>
-                {{ question.text }}
+                <strong>Section Name:</strong>
+                {{ section.name }}
             </p>
 
-            <p *ngIf="question.questionType == 6">
-                <strong>Answer {{ i + 1 }}:</strong>
-                {{ question.responseOptions[question.response] }}
+            <p>
+                <strong>Section Description:</strong>
+                {{ section.description }}
             </p>
 
-            <p *ngIf="question.questionType == 5"><strong>Answer {{ i + 1 }}:</strong>
-                <ng-container *ngFor="let multiOptionPart of question.response.split('|'); let j = index">
-                    {{ j > 0 ? '|' : '' }} {{ question.responseOptions[multiOptionPart] }}
-                </ng-container>
-            </p>
+            <div *ngFor="let question of section.questionsWithResponses; let i = index">
+                <p>
+                    <strong>Question {{ i + 1 }}:</strong>
+                    {{ question.text }}
+                </p>
 
-            <p *ngIf="question.questionType == 4">
-                <strong>Answer {{ i + 1 }}:</strong>
-                <tq-star-rating [rating]="+question.response" [starCount]="5" [disabled]="true"></tq-star-rating>
-            </p>
+                <p *ngIf="question.questionType == 6">
+                    <strong>Answer {{ i + 1 }}:</strong>
+                    {{ question.responseOptions[question.response] }}
+                </p>
 
-            <p *ngIf="![4, 5, 6].includes(question.questionType)">
-                <strong>Answer {{ i + 1 }}:</strong>
-                {{ question.response }}
-            </p>
-        </div>
+                <p *ngIf="question.questionType == 5">
+                    <strong>Answer {{ i + 1 }}:</strong>
+                    <ng-container *ngIf="question.response">
+                        <ng-container *ngFor="let multiOptionPart of question.response.split('|'); let j = index">
+                            {{ j > 0 ? '|' : '' }} {{ question.responseOptions[multiOptionPart] }}
+                        </ng-container>
+                    </ng-container>
+                </p>
 
-    </div>
-    <hr>
+                <p *ngIf="question.questionType == 4">
+                    <strong>Answer {{ i + 1 }}:</strong>
+                    <tq-star-rating [rating]="+question.response" [starCount]="5" [disabled]="true"></tq-star-rating>
+                </p>
+
+                <p *ngIf="![4, 5, 6].includes(question.questionType)">
+                    <strong>Answer {{ i + 1 }}:</strong>
+                    {{ question.response }}
+                </p>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+
 </div>

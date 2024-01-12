@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FormControlService } from 'src/app/core/services/form-control.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { FormList, Question, responses } from 'src/app/core/types/forms';
 import { QuestionTypes } from 'src/app/core/types/question-type';
@@ -21,22 +22,13 @@ export class UserQuestionsComponent implements OnInit {
   formResponses: responses = new responses();
   @Output() formSubmitted = new EventEmitter();
 
-  onSubmit() {
-    Object.values(this.userAnswersForm.controls).forEach(control => {
-      control.markAsTouched();
-    });
-    this.formSubmitted.emit();
-  }
-  // selectedValue = Array(1, 2);
-
-  constructor(private _fb: FormBuilder, private userService: UsersService, private cdr: ChangeDetectorRef) { }
+  constructor(private _fb: FormBuilder, private _userService: UsersService, private _cdr: ChangeDetectorRef, private formControlService: FormControlService) { }
 
   ngOnInit(): void {
-    // const formGroup = {};
-    this.userAnswersForm = this._fb.group({
-      ['question' + this.index]: ['', this.questions.required ? Validators.required : null],
-    }) as FormGroup;
+    this.createForm();
+    this.subscribeToFormChanges();
 
+    // console.log(this.questionType)
     if (this.questions.response) {
       if (this.questions.questionType == 5) {
         const selectedOption = this.questions.response.split('|');
@@ -48,17 +40,30 @@ export class UserQuestionsComponent implements OnInit {
       else
         this.userAnswersForm.get('question' + this.index)?.setValue(this.questions.response);
 
-      this.cdr.detectChanges();
+      this._cdr.detectChanges();
     }
 
+  }
 
+
+  private createForm(): void {
+    this.userAnswersForm = this._fb.group({
+      ['question' + this.index]: [null, this.questions.required ? Validators.required : null],
+      // ['numericAnswer' + this.index]: [null, this.questions.required ? Validators.required : null],
+    }) as FormGroup;
+    this.formControlService.registerForm(this.userAnswersForm);
+    // console.log(this.userAnswersForm)
+  }
+
+
+  private subscribeToFormChanges(): void {
     this.userAnswersForm.valueChanges
       .pipe(
         debounceTime(1000),
         distinctUntilChanged()
       )
       .subscribe((res) => {
-        console.log(res)
+        // console.log(res)
         let responseObjValue;
         if (res['question' + this.index] instanceof Object) {
           if (res['question' + this.index].length > 0)
@@ -73,24 +78,34 @@ export class UserQuestionsComponent implements OnInit {
   }
 
 
-  onRatingChanged(rating: number) {
+  onSubmit() {
+    Object.values(this.userAnswersForm.controls).forEach(control => {
+      console.log(control)
+      control.markAsTouched();
+    });
+    this.formSubmitted.emit();
+  }
+
+  onRatingChanged(rating: number, index: number) {
     // console.log(rating);
     this.rating = rating;
     this.saveResponse(this.rating);
+    this.userAnswersForm.get('question' + index)?.setValue(rating)
   }
 
 
-  saveResponse(obj: any) {
+  saveResponse(response: any) {
     this.formResponses.formId = this.formId;
     this.formResponses.responses = [{
       questionId: this.questions.questionId,
-      response: obj
+      response: response
     }];
 
-    this.userService.autoSaveFormResponses(this.formResponses).subscribe(res => {
-      console.log(res);
-    })
+    this._userService.autoSaveFormResponses(this.formResponses).subscribe(res => {
+      // console.log(res);
+    });
   }
+
 
 
 }

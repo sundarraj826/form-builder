@@ -17,7 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatSliderModule } from '@angular/material/slider';
 import { RemoveUnderscorePipe } from './types/key-pipe';
 
 
@@ -63,7 +63,8 @@ function tryInitiateSession(authService: AuthService): () => Promise<void> {
 		MatStepperModule,
 		MatCheckboxModule,
 		MatSnackBarModule,
-		MatSelectModule
+		MatSelectModule,
+		MatSliderModule,
 	],
 	providers: [
 		{

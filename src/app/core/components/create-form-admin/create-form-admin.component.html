@@ -4,7 +4,7 @@
   <a mat-raised-button color="accent" *ngIf="formid" [routerLink]="['../../'+appRoute.adminPreview, formid]" mat-button
     class="mb-3" target="_blank">Preview</a>
 
-  <form action="" [formGroup]="createForm" (ngSubmit)="createFormSubmit()">
+  <form [formGroup]="createForm" (ngSubmit)="createFormSubmit()">
     <div>
       <mat-form-field appearance="outline" class="d-block">
         <mat-label for="title">Title</mat-label>

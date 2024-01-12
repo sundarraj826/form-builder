@@ -1,13 +1,10 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormList } from '../../types/forms';
 import { Result } from '../../types/result';
 import { FormService } from '../../services/form.service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
-import { QuestionTypes } from '../../types/question-type';
+import { AbstractControl, FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
 import { AppRoutes } from '../../routes/app-routes';
 import { ActivatedRoute, Router } from '@angular/router';
-import { empty } from 'rxjs';
-import { ResultBase } from '../../types/result-base';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormControlService } from '../../services/form-control.service';
 
@@ -42,12 +39,16 @@ export class CreateFormAdminComponent implements OnInit {
   })
   saveformSetting!: FormList;
 
-  constructor(private _formService: FormService, private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private formControlService: FormControlService, private renderer: Renderer2) {
+  constructor(
+    private _formService: FormService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _formControlService: FormControlService) {
   }
 
   ngOnInit(): void {
 
-    this.route.params.subscribe(params => {
+    this._route.params.subscribe(params => {
       let id = params['id'];
       if (id) {
         this.formid = id;
@@ -57,6 +58,7 @@ export class CreateFormAdminComponent implements OnInit {
 
     this._formService.getFormDetailsValue().subscribe((res: FormList) => {
       this.saveSettingsForm = res;
+      console.log(res)
     })
 
     //auto save form fields
@@ -69,14 +71,16 @@ export class CreateFormAdminComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe((res: FormList) => {
-        const hasValidValues = (res.title.trim() ?? '') !== '' && (res.description.trim() ?? '') !== '';
+        // const hasValidValues = (res.title.trim() ?? '') !== '' && (res.description.trim() ?? '') !== '';
+        const hasValidValues = (res.title?.trim() ?? '') !== '' && (res.description?.trim() ?? '') !== '';
 
         // console.log(res)
         if (hasValidValues) {
-          this.saveFormFormat.title = res.title;
-          this.saveFormFormat.description = res.description;
+          this.saveFormFormat.title = res.title.trim();
+          this.saveFormFormat.description = res.description.trim();
           this._formService.setSaveFormValue(this.saveFormFormat);
           this._formService.autoSaveFormValue().subscribe();
+          // console.log(res)
         }
       });
 
@@ -92,7 +96,7 @@ export class CreateFormAdminComponent implements OnInit {
       (response: Result<FormList>) => {
         this.getFormDetails(response.value?.formId);
 
-        this.router.navigate(['account/create-form-admin', response.value?.formId]);
+        this._router.navigate(['account/create-form-admin', response.value?.formId]);
       },
       (error) => {
         console.error('Error for form creating:', error);
@@ -157,32 +161,24 @@ export class CreateFormAdminComponent implements OnInit {
       // console.log(res)
       if (res.ok) {
         alert("Form has been Locked");
-        this.router.navigate(['account/form-listing']);
+        this._router.navigate(['account/form-listing']);
       } else {
         alert(res.errors);
       }
 
     })
   }
-  private setFocus(control: AbstractControl) {
-    const ngControl = control as any;
 
-    if (ngControl && ngControl['control'] instanceof NgControl) {
-      const formControlDirective = ngControl['control'] as NgControl;
-      const controlElement = formControlDirective.valueAccessor as unknown as HTMLElement;
 
-      if (controlElement) {
-        controlElement.focus();
-      }
-    }
-  }
   submitForm() {
-    this.formControlService.markAllFormsAsTouched();
-    if (this.formControlService.formsValid()) {
+    this._formControlService.markAllFormsAsTouched();
+    if (this._formControlService.formsValid()) {
       this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
-        this.saveformSetting = res.value!
-        this._formService.saveFormSettings(this.saveformSetting).subscribe((res: any) => {
-          alert(res)
+        this.saveformSetting = res.value!;
+        this._formService.saveFormSettings(this.saveformSetting).subscribe((res) => {
+          // alert(res.ok)
+          alert("Form Saved Successfully!!!")
+          console.log(res)
         });
 
       });
