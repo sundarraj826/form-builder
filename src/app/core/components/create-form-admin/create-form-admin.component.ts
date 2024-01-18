@@ -14,15 +14,13 @@ import { FormControlService } from '../../services/form-control.service';
   styleUrls: ['./create-form-admin.component.less']
 })
 export class CreateFormAdminComponent implements OnInit {
-  formResponse!: Result<FormList[]>;
   formid!: number;
   formData!: FormList;
-  inputValue!: string;
+  // inputValue!: string;
   saveSettingsForm!: FormList;
-  stepForms: FormGroup[] = [];
   saveFormFormat!: FormList;
   appRoute = AppRoutes;
-  @ViewChild('qesSelect') qesSelect!: ElementRef;
+
 
   createForm = new FormGroup({
     title: new FormControl('', [
@@ -47,7 +45,7 @@ export class CreateFormAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log(this.formData)
     this._route.params.subscribe(params => {
       let id = params['id'];
       if (id) {
@@ -87,9 +85,6 @@ export class CreateFormAdminComponent implements OnInit {
 
   }
 
-  // get backBtn(): string {
-  //   return '../' + AppRoutes.formListing;
-  // }
 
   createFormSubmit() {
     this._formService.addCreateForm(this.createForm.controls.title.value, this.createForm.controls.description.value).subscribe(
@@ -109,7 +104,7 @@ export class CreateFormAdminComponent implements OnInit {
   getFormDetails(id: any) {
     this._formService.getFormSetting(id).subscribe((res: Result<FormList>) => {
 
-      // console.log(res)
+      console.log(res)
       if (res.value) {
         this._formService.setFormDetailsValue(res.value);
         this.formData = res.value;
@@ -149,8 +144,11 @@ export class CreateFormAdminComponent implements OnInit {
   }
 
   createSection() {
+
     this._formService.addCreateSection(this.formid).subscribe((result: Result<FormList>) => {
       this.getFormDetails(result.value?.formId);
+      this.saveformSetting = result.value!
+      console.log(result)
     });
   }
 
@@ -175,11 +173,13 @@ export class CreateFormAdminComponent implements OnInit {
     if (this._formControlService.formsValid()) {
       this._formService.getFormSetting(this.formData.formId).subscribe((res: Result<FormList>) => {
         this.saveformSetting = res.value!;
-        this._formService.saveFormSettings(this.saveformSetting).subscribe((res) => {
-          // alert(res.ok)
-          alert("Form Saved Successfully!!!")
-          console.log(res)
-        });
+        console.log(res)
+        alert("Form Saved Successfully!!!")
+        // this._formService.saveFormSettings(this.saveformSetting).subscribe((res: Result<FormList>) => {
+        //   // alert(res.ok)
+        //   alert("Form Saved Successfully!!!")
+        //   console.log(res)
+        // });
 
       });
     } else {

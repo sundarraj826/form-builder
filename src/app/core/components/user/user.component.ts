@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { Result } from '../../types/result';
 import { FormList } from '../../types/forms';
-import { QuestionTypes } from '../../types/question-type';
+// import { QuestionTypes } from '../../types/question-type';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { coerceStringArray } from '@angular/cdk/coercion';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { FormControlService } from '../../services/form-control.service';
 export class UserComponent implements OnInit {
   // toppings = new FormControl('');
   // @ViewChild(UserQuestionsComponent) userQuestionsComponent!: UserQuestionsComponent;
-  questionType = QuestionTypes;
+  // questionType = QuestionTypes;
   formSetting!: FormList;
 
   constructor(private _usersService: UsersService, private route: ActivatedRoute, private _fb: FormBuilder, private router: Router,
@@ -38,7 +38,7 @@ export class UserComponent implements OnInit {
   getFormDetails(id: number) {
     this._usersService.getFormWithResponses(id).subscribe((res: Result<FormList>) => {
       this.formSetting = res.value!;
-      console.log(res)
+      console.log(res.value)
     });
   }
   submitForm() {

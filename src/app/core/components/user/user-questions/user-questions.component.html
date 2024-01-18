@@ -1,5 +1,6 @@
 <div class="mb-3">
     <h5>{{questions.text}} <span *ngIf="questions.required" class="text-danger">*</span></h5>
+    {{ questions.questionType}}
     <form action="" [formGroup]="userAnswersForm" (ngSubmit)="onSubmit()">
         <div [ngSwitch]="questions.questionType">
             <div *ngSwitchCase="questionType.Numeric">

@@ -23,7 +23,6 @@ import { SelectableQuestionComponent } from './components/question-type/selectab
 import { UserFormResponseComponent } from './components/user-form-response/user-form-preview.component';
 import { UserComponent } from './components/user/user.component';
 import { UserQuestionsComponent } from './components/user/user-questions/user-questions.component';
-import { YesOrNoQuestionComponent } from './components/question-type/yes-or-no-question/yes-or-no-question.component';
 import { StarRatingComponent } from './components/common/star-rating/star-rating.component';
 import { AdminPreviewComponent } from './components/admin-preview/admin-preview.component';
 // Routes
@@ -83,7 +82,6 @@ export const components: Array<any> = [
 	SelectableQuestionComponent,
 	UserComponent,
 	UserQuestionsComponent,
-	YesOrNoQuestionComponent,
 	StarRatingComponent,
 	AdminPreviewComponent,
 	UserFormResponseComponent

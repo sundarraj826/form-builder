@@ -13,9 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AdminPreviewComponent implements OnInit {
   formSetting!: FormList;
-
-  // toppings = new FormControl('');
-  // toppingList: string[] = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
   questionType = QuestionTypes;
   rating: number = 0;
   starCount: number = 5;

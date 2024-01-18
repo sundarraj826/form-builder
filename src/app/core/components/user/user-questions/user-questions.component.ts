@@ -80,7 +80,7 @@ export class UserQuestionsComponent implements OnInit {
 
   onSubmit() {
     Object.values(this.userAnswersForm.controls).forEach(control => {
-      console.log(control)
+      // console.log(control)
       control.markAsTouched();
     });
     this.formSubmitted.emit();
@@ -102,7 +102,7 @@ export class UserQuestionsComponent implements OnInit {
     }];
 
     this._userService.autoSaveFormResponses(this.formResponses).subscribe(res => {
-      // console.log(res);
+      console.log(res);
     });
   }
 

@@ -29,8 +29,5 @@ export class UserFormResponseComponent implements OnInit {
       this.formResponse = res.value!;
     });
   }
-  splitResponse(response: string, separator: string): string[] {
-    return response.split(separator);
-  }
 
 }

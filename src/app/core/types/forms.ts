@@ -4,7 +4,6 @@ export class FormList {
     description!: string;
     status!: string;
     sections!: FormSection[];
-
 }
 
 export class FormSection {
@@ -13,6 +12,7 @@ export class FormSection {
     description!: string;
     questions!: Question[];
     questionsWithResponses!: Question[];
+    formId!: number;
 }
 
 // export class CreateQuestion {
